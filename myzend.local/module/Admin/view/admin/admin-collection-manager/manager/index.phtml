@@ -1,0 +1,39 @@
+<?
+$title = 'My store';
+$this->headTitle($title);
+//$this->headLink()
+//   ->appendStylesheet('public/css/bootstrap.css');
+//echo $this->headLink();
+?>
+<h1><?php echo $this->escapeHtml($title); ?>
+    <a class="btn btn-success pull-right" href="<?php echo $this->url('collection', array('action'=>'add'));?>">Add new item</a>
+</h1>
+<table class="table" id="tableGoods">
+    <tr>
+        <th>name</th>
+        <th>view</th>
+        <th>brand</th>
+        <th>quantity</th>
+        <th>price</th>
+        <th>category</th>
+        <th>action</th>
+
+    </tr>
+    <?php foreach ($collection as $item) : ?> <!-- $collection приходит из метода indexAction из CollectionController.php -->
+        <tr id="<?php echo ++$i ;?>">
+            <td><?php echo $this->escapeHtml($item->item_name);?></td>
+            <td><img src= "<?php echo  Collection\Model\Collection::COLL_IMG_PATH.$this->escapeHtml($item->img_link);?>" /></td>
+            <td><?php echo $this->escapeHtml($item->b_name);?></td>
+            <td><?php echo $this->escapeHtml($item->item_quantity);?></td>
+            <td><?php echo $this->escapeHtml($item->item_price);?></td>
+            <td><?php echo $this->escapeHtml($item->subcat_name);?>
+                <?php echo $this->escapeHtml($item->cat_name);?></td>
+            <td>
+                <a href="<?php echo $this->url('collection',
+                    array('action'=>'edit', 'id' => $item->item_id));?>">Edit</a>
+                <a href="<?php echo $this->url('collection',
+                    array('action'=>'delete', 'id' => $item->item_id));?>">Delete</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

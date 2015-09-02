@@ -1,0 +1,29 @@
+<div id="all-about-collection-wrapper">
+    <table class="all-about-collection">
+        <tr>
+            <td id="collection-options-wrapper-td" valign="top" width="160px">
+                <div id="col-opt-desc-text" class="box-box-box">NARROW RESULT by:</div>
+                <!-- include type-filter -->
+                <?=$this->partial('collection/collection/partial/filter-type.phtml');?>
+                <!-- include price-filter -->
+                <?=$this->partial('collection/collection/partial/filter-price.phtml');?>
+                <!-- include color-filter -->
+                <?=$this->partial('collection/collection/partial/color-picker.phtml');?>
+            </td>
+            <td>
+                <div id="collection-main-wrapper">
+                    <div class="box-box-box">
+                        <div id="sort-info"></div>
+                    </div>
+                    <!-- include collection -->
+                    <div id="collection-foreach-collection">
+                        <?=$this->partial('collection/collection/partial/collection.phtml');?>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <!-- TO-CART-CONFIRM -->
+    <div id="collection-overlay"></div>
+    <div id="to-cart-confirm"></div>
+</div>

@@ -1,0 +1,38 @@
+<a href="/admin/collection-manager/add-form-view"> [ add single item ] </a>
+<a href=""> [ add list of items ] </a>
+<a href=""> [ update stock ] </a>
+<a href=""> [ revaluation all ] </a>
+<hr />
+<table id="tableGoods-adm">
+    <th>id</th>
+    <th>name</th>
+    <th><input name="discount" type="checkbox" />&nbsp;discount</th>
+    <th><input name="discount" type="checkbox" />&nbsp;bestseller</th>
+    <th><input name="discount" type="checkbox" />&nbsp;top most</th>
+    <th>view</th>
+    <th>price</th>
+    <th>quantity</th>
+    <th>action</th>
+<?php foreach ($collection as $item) : ?>
+    <tr>
+        <td><?php echo $item->item_id ;?></td>
+        <td><?php echo $item->item_name ;?></td>
+
+        <td><input name="discount" type="checkbox" /></td>
+        <td><input name="bestseller" type="checkbox" /></td>
+        <td><input name="top_most" type="checkbox" /></td>
+
+        <td><img src= "<?php echo  Admin\Model\AdminCollection::COLL_IMG_PATH.$this->escapeHtml($item->img_link);?>" /></td>
+        <td><?php echo $item->item_price ;?></td>
+        <td><?php echo $item->item_quantity ;?></td>
+        <td class="coll-hidden-control-btn"><!-- action -->
+            <span class="zf-midnightblue"><a href="<?php echo $this->url('collection-manager',
+                    array('action'=>'edit-view', 'id' => $item->item_id));?>">[ edit ]</a>
+            </span><br />
+            <span class="zf-midnightblue"><a href="<?php echo $this->url('collection-manager',
+                    array('action'=>'delete', 'id' => $item->item_id));?>">[ delete ]</a>
+            </span>
+        </td>
+    </tr>
+<?php endforeach; ?>
+</table>

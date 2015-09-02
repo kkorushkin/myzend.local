@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<table class="table" id="tableUsers">
+    <h1> Users <a class="btn btn-success pull-right" href="<?php echo $this->url('users/manager',array(
+                'action' => 'add'));?>">add new user</a>
+    </h1>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>EMAIL</th>
+        <th>ROLE</th>
+        <th colspan="2"></th>
+    </tr>
+    <?php foreach ($users as $item) : ?>
+    <tr id="<?php echo ++$i ;?>">
+        <td><?php echo $this->escapeHtml($item->user_id);?></td>
+        <td><?php echo $this->escapeHtml($item->user_name);?></td>
+        <td><?php echo $this->escapeHtml($item->user_email);?></td>
+        <td><?php echo $this->escapeHtml($item->user_role);?></td>
+        <td class="actionBtn"><a class="btn btn-success pull-right" href="<?php echo $this->url('users/manager',
+                array('action'=>'edit', 'id' => $item->user_id));?>">Edit</a></td>
+        <td class="actionBtn"><a class="btn btn-success pull-left" href="<?php echo $this->url('users/manager',
+                array('action'=>'delete', 'id' => $item->user_id));?>">Delete</a></td>
+    </tr>
+<?php endforeach; ?>
+</table>
+</body>
+</html>

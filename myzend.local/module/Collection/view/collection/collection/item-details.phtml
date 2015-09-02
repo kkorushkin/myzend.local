@@ -1,0 +1,82 @@
+<?php //die(var_dump($details));?> <!--in case of forgotten income array's fields names - uncomment-->
+<!-- TO-CART-CONFIRM -->
+<div id="collection-overlay"></div>
+<div id="to-cart-confirm"></div>
+<table id="item-detailes-table">
+    <tr>
+        <td id="item-details-img-td" rowspan="4" style="background-image: url(<?php echo Collection\Model\Collection::COLL_IMG_PATH.$details->img_link;?>);">
+            <div class="zoom-img"></div>
+            <div id="is-in-cart-img"><img src="<?=$this->is_in_cart;?>" /></div>
+            <!--<img id="item-details-img" src="<?php echo Collection\Model\Collection::COLL_IMG_PATH.$details->img_link;?>" />-->
+        </td>
+        <td rowspan="4">
+            <?php
+                foreach($img_s as $img_link){
+                    echo '<div class="item-details-img-preview"><img src="'.Collection\Model\Collection::COLL_IMG_PATH.$img_link.'" /></div>';
+                }
+            ;?>
+        </td>
+        <td align="center">
+            <h2><?=$details->item_name;?></h2><br />
+            <!--
+            <a href="<?=$this->url('order', array('controller' => 'order', 'action' => 'index'))?>">
+                <div class="btn btn-success pull">Buy this one as single</div>
+            </a>
+            -->
+            <div id="this-to-cart-" class="btn btn-success pull" data-num="<?=$details->item_id;?>">Add to cart</div>
+            <a href="<?=$this->url('collection', array());?>">
+                <div class="btn btn-success pull">Back to main showcase</div>
+            </a>
+        </td>
+    </tr>
+        <tr><td align="center"><h2><?=$details->item_price;?>&nbsp;$</h2></td></tr>
+        <tr><td>quantity to order:</td></tr>
+        <tr><td>shipping policy</td></tr>
+</table>
+
+<script type="text/javascript">
+    $('.item-details-img-preview').click(function(){
+        var $imgUrl = $(this).find('img').attr('src');
+        console.log("url(" + $imgUrl + ")");
+        $("#item-details-img-td").css("backgroundImage", "url(" + $imgUrl + ")");
+    });
+</script>
+<script type="text/javascript">
+    (function($, undefined){
+        var i = 0;
+            $("#item-details-img-td").on("click",function(){
+                //i++;
+                //console.log(i);
+                var $imgUrl = $("#item-details-img-td").css("background-image");
+                $(".zoom-img")
+                    .css({"background-image":"" + $imgUrl + "", "background-repeat":"no-repeat"})
+                    .show(300);
+                $("#item-details-img-td").css('cursor', 'zoom-out')
+            });
+        $("#item-details-img-td").on("mousemove",function (e){
+            // положение элемента
+            var offset = $(this).offset(),         // В переменной offset хранятся координаты блока с миниатюрой
+                x = (e.pageX - offset.left),       // В переменной хранится координата X курсора мыши относительно блока с миниатюрой
+                y = (e.pageY - offset.top),        // Координата Y курсора мыши.
+                w = $(this).width(),                   // Ширина миниатюры
+                h = $(this).height();               // Высота миниатюры
+                // Позиционирование фона большого изображения относительно того, куда указывает курсор на миниатюре.
+                $(".zoom-img").css({'background-position': (x / w * 100) + '% ' + (y / h * 100) + '%'});
+            $("#item-details-img-td").css({'position': x + 'px ' + y + 'px'});
+        });
+        $("#item-details-img-td").on("mouseleave",function(){
+            $(this).css('cursor', 'zoom-in');
+            $(".zoom-img").hide(300);// Контейнер с большим изображением скрывается
+        });
+        $('.zoom-img').on('click', function(e){
+            e.stopPropagation();
+            $("#item-details-img-td").css('cursor', 'zoom-in');
+            $(this).hide(300);
+            //i++;
+            //console.log(i);
+        })
+    })(jQuery);
+</script>
+
+
+

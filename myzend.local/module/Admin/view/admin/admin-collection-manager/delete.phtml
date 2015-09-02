@@ -1,0 +1,22 @@
+<?
+$title = 'Delete item';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Are you sure that you want to delete
+    <!-- $item получает бъект бд автоматом из CollectionController ->deleteAction() по
+     соответствию имени метода и вьюхи (delete.phtml) -->
+    '<?php echo $this->escapeHtml($item->item_name); ?>' from store database ?
+</p>
+
+<form action="<?php echo $url = $this->url(null, array(
+    'controller' => 'AdminCollectionManager',
+    'action' => 'delete', 'id' => $this->id,
+)); ?>" method="post">
+    <div>
+        <input type="hidden" name="id" value="<?php echo $item->item_id; ?>" />
+        <input type="submit" name="del" value="Yes" />
+        <input type="submit" name="del" value="No" />
+    </div>
+</form>

@@ -1,0 +1,34 @@
+<?php
+    $flash = $this->flashMessenger();
+    echo $flash->render('order_not_allowed', array(
+        'alert', 'alert-dismissable', 'alert-danger'
+    ));
+$title = 'My store.';
+$this->headTitle($title);
+echo $this->headLink()->prependStylesheet($this->basePath('css/cart.css'));
+//echo $this->headScript()->prependFile($this->basePath('js/customk.js'));
+?>
+<!-- Search form -->
+<div id="search-item">
+    <?php
+    $form = $this->collectionSearchForm();
+    $form->setAttribute('action', $this->url(null, array(
+        'controller'=>'collection',
+        'action' => 'search'
+    )));
+    $form->setAttribute('method', 'post');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formElement($form->get('search_target'));
+    echo $this->formElement($form->get('submit'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<!-- view from rout -->
+<?php echo $this->content; ?>
+<!-- CART ICON -->
+<div id="shopping-cart" class="cart-link-k">
+    <img id="shopping-cart-img" src="<?php echo $this->basePath($this->collectionCartIndicator());?>" />
+</div>
+<!-- Cart view -->
+<div id="cart-view-modal-k"></div>

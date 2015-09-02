@@ -1,0 +1,55 @@
+<?php
+$title = 'Edit item';
+$this->headTitle($title);
+?>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+
+?>
+<section class="edit-item">
+    <?php if ($this->error): ?>
+        <p class="error">
+            There were one or more issues with your submission.
+            Please correct them as indicated below.
+        </p>
+    <?php endif;
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('collection-manager', array(
+        'action' => 'edit',
+        'id'     => $this->item_id,
+    )));
+    $form->setAttribute('method', 'post');
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+    <dl class="zend_form">
+        <dd><?php echo $this->formElement($form->get('item_id'));?></dd>
+        <dt><?php echo $this->formLabel($form->get('item_name')); ?></dt>
+        <dd><?php echo $this->formElement($form->get('item_name'));
+            echo $this->formElementErrors($form->get('item_name'));?>
+        </dd>
+        <dt><?php echo $this->formLabel($form->get('item_brand'));?></dt>
+        <dd><?php echo $this->formElement($form->get('item_brand')->setAttribute('options', ($this->brands)));
+            echo $this->formElementErrors($form->get('item_brand'));?>
+        </dd>
+        <dt><?php echo $this->formLabel($form->get('item_description'));?></dt>
+        <dd><?php echo $this->formElement($form->get('item_description'));
+            echo $this->formElementErrors($form->get('item_description'));?>
+        </dd>
+        <dt><?php echo $this->formLabel($form->get('item_price'));?></dt>
+        <dd><?php echo $this->formElement($form->get('item_price'));
+            echo $this->formElementErrors($form->get('item_price'));?>
+        </dd>
+        <dt><?php echo $this->formLabel($form->get('item_quantity'));?></dt>
+        <dd><?php echo $this->formElement($form->get('item_quantity'));
+            echo $this->formElementErrors($form->get('item_quantity'));?>
+        </dd>
+        <dt><?php echo $this->formLabel($form->get('item_category'));?></dt>
+        <dd><?php echo $this->formElement($form->get('item_category')->setAttribute('options', ($this->categories)));
+            echo $this->formElementErrors($form->get('item_category'));?>
+        </dd>
+        <dd><?php echo $this->formElement($form->get('submit'));?></dd>
+        <dd><?php echo $this->form()->closeTag();?></dd>
+    </dl>
+</section>
+

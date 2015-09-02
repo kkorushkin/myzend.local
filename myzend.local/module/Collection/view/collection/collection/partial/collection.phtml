@@ -1,0 +1,150 @@
+<?php foreach ($collection as $item) : //var_dump($collection)
+    $i++;
+?>
+    <div class="tableGoods" data-num="<?=$item->item_id;?>"  onmouseover="appearToCartBtn(this)" onmouseout="disappearToCartBtn(this)">
+        <table class="coll-table" data-num="<?=$item->item_id;?>"">
+            <tr>
+                <td colspan="2">
+                    <p class="zf-midnightblue"><?php echo $this->escapeHtml($item->item_name) ;?></p>
+                </td>
+            </tr>
+            <tr>
+                <td class="collection-img-wrapper" colspan="2" style="background-image: url(<?php echo  Collection\Model\Collection::COLL_IMG_PATH.$this->escapeHtml($item->img_link);?>)">
+                    <a href="<?php echo $this->url('collection', array('action'=>'item-details', 'id' => $item->item_id));?>">
+                        <div class="goodsTable-price">$&nbsp;<?php echo $item->item_price ;?></div>
+                    </a>
+                </td>
+            </tr>
+            <tr class="mast-have-height">
+                <td>
+                    <!-- in case of ordinary get url request will need
+                            <span class="zf-midnightblue"><a href="<?php echo $this->url('collection',
+                        array('action'=>'item-details', 'id' => $item->item_id));?>">details</a></span>
+                                -->
+                </td>
+                <td align="right">
+                    <!-- in case of ordinary get url request will need -->
+                    <!--
+                            <span class="zf-midnightblue"><a href="<?php echo $this->url('collection',
+                        array('action'=>'item-details', 'id' => $item->item_id));?>">to cart</a></span>
+                            -->
+                    <div id="this-to-cart-<?=$item->item_id;?>" class="to-cart-this" data-num="<?=$item->item_id;?>"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+<?php endforeach; ?>
+
+<script type="text/javascript">
+// NOTICE:
+    function appearToCartBtn(x){
+        var item_id= $(x).data('num');
+        $('#this-to-cart-' + item_id).css('display', 'block');
+        //alert('#this-to-cart-' + item_id);
+    }
+    function disappearToCartBtn(x){
+        var item_id= $(x).data('num');
+        $('#this-to-cart-' + item_id).css('display', 'none');
+        //alert('#this-to-cart-' + item_id);
+    }
+</script>
+<script type="text/javascript">
+// NOTICE: SHOW 'TO-CART' CONFIRMATION DIALOG
+$("[id^=this-to-cart-], #item-details-to-cart").click(function () {
+    $('#collection-overlay')
+        .fadeIn()
+        .css('display', 'block');
+    $.post("/collection/to-cart-confirm", {value: $(this).data('num')}, function (data) {
+        $('#to-cart-confirm')
+            .html(data)
+            .fadeIn()
+            .css('display', 'block');
+        $('#collection-main-wrapper')
+            .css('filter', 'blur(3px)');
+        // CHANGE PRICE DEPENDING OF QUANTITY WITH KEYBOARD
+        $('#to-cart-confirm-item_quantity').keyup(function(){
+            var i = $('#to-cart-confirm-item_price').data('num');
+            var j = $(this).val();
+            if(j == 0){
+                alert('can\'t order zero qty.');
+                $('#to-cart-confirm-item_quantity').val(1);
+            }else if(j > 10000){
+                alert('can\'t order more then 10000 per order.');
+                $('#to-cart-confirm-item_quantity').val(10000);
+            }
+            //alert(i + ' and ' + j)
+            $('#to-cart-confirm-item_price').text((i * j) + ' $');
+        });
+        // CHANGE PRICE DEPENDING OF QUANTITY WITH '- +' FORM BUTTON
+        $('.math-sign').click(function(){
+            var i = parseInt($('#to-cart-confirm-item_price').data('num'));
+            var j = parseInt($('#to-cart-confirm-item_quantity').val());
+            switch ($(this).text()){
+                case '-':
+                    j--;
+                    $('#to-cart-confirm-item_quantity').val(j);
+                    if(j < 1){
+                        j = 1;
+                        alert('can\'t order zero qty.'); $('#to-cart-confirm-item_quantity').val(1);
+                    }
+                    $('#to-cart-confirm-item_price').text('$' + (i * j));
+                    break;
+                case '+':
+                    j++;
+                    $('#to-cart-confirm-item_quantity').val(j);
+                    if(j > 10000){
+                        j = 10000;
+                        alert('can\'t order more then 10000 per order.');
+                        $('#to-cart-confirm-item_quantity').val(10000);
+                    }
+                    $('#to-cart-confirm-item_price').text('$' + (i * j));
+                    break;
+                default:
+                    alert('default');
+            }
+            //alert(i + ' and ' + j)
+            //$('#to-cart-confirm-item_price').text((i * j) + ' $');
+        });
+// NOTICE: ADD COLLECTION ITEM TO DB_CARTS
+        // FADE OUT BLUR EFFECT, HIDE OVERLAY, HIDE CONFIRMATION DIALOG
+        $('#to-cart-confirm-btn').click(function(){
+            $('#shopping-cart-img').attr('src','/img/cart-header-full.png');
+            $('#to-cart-confirm')
+                .fadeOut()
+                .css('display', 'none');
+            $('#collection-overlay')
+                .fadeOut()
+                .css('display', 'none');
+            $('#collection-main-wrapper')
+                .css('filter', 'blur(0px)');
+            $.post("/collection/to-cart", {
+                item_id: $('#to-cart-confirm-item_id').val(),
+                item_quantity: $('#to-cart-confirm-item_quantity').val().trim(),
+                item_price: $('#to-cart-confirm-item_price').text()
+            },function(data){
+                alert(data);
+            });
+        });
+        // FADE OUT BLUR EFFECT, HIDE OVERLAY, HIDE CONFIRMATION DIALOG
+        $('#to-cart-cancel-btn').click(function(){
+            $('#to-cart-confirm')
+                .fadeOut()
+                .css('display', 'none');
+            $('#collection-overlay')
+                .fadeOut()
+                .css('display', 'none');
+            $('#collection-main-wrapper')
+                .css('filter', 'blur(0px)');
+        });
+    });
+});
+// NOTICE: SHOW CART DETAILS IN MODAL VIEW + SHOW CART'S CLOSE ICON
+$('#shopping-cart').click(function() {
+    $.post("/cart", function(data) {
+        $('#cart-view-modal-k')
+            .html(data)
+            .toggle('slow')
+    });
+});
+
+</script>

@@ -1,0 +1,69 @@
+<?php
+$title = 'Add new item';
+$this->headTitle($title);
+?>
+    <h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url(null, array(
+    'controller'=>'AdminCollectionManager',
+    'action' => 'add'
+)));
+$form->setAttribute('method', 'post');
+echo $this->form()->openTag($form);
+//die(var_dump($this->brands));
+?>
+<?php if ($this->error): ?>
+    <p class="error">
+        There were one or more issues with your submission.
+        Please correct them as indicated below.
+    </p>
+<?php endif ?>
+<table>
+    <tr>
+        <td><?php echo $this->formElement($form->get('item_id'));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_name'));?></td>
+        <td><?php echo $this->formElement($form->get('item_name'));?></td>
+        <td><?php echo $this->formElementErrors($form->get('item_name'));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_brand'));?></td>
+        <td><?php echo $this->formElement($form->get('item_brand')->setAttribute('options', ($this->brands))) ;?></td>
+        <td><?php echo $this->formElementErrors($form->get('item_brand'));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_description'));?></td>
+        <td><?php echo $this->formElement($form->get('item_description'));?></td>
+        <td><?php echo $this->formElementErrors($form->get('item_description'));?></td>
+
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_price'));?></td>
+        <td><?php echo $this->formElement($form->get('item_price'));?></td>
+        <td><?php echo $this->formElementErrors($form->get('item_price'));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_category'));?></td>
+        <td><?php echo $this->formElement($form->get('item_category')->setAttribute('options', ($this->categories)));?></td>
+        <td><?php echo $this->formElementErrors($form->get('item_category'));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_sub_category'));?></td>
+        <td><?php echo $this->formElement($form->get('item_sub_category')->setAttribute('options', ($this->sub_cats)));?></td>
+        <td><?php echo $this->formElementErrors($form->get('item_sub_category'));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('img_link'));?></td>
+        <td><?php echo $this->formElement($form->get('img_link'));?></td>
+        <td><?php echo $this->formElementErrors($form->get('img_link'));?></td>
+    </tr>
+    <tr>
+        <td colspan="2"><?php echo $this->formElement($form->get('submit')/*->setAttribute('class','btn btn-success pull-right')*/);?></td>
+    </tr>
+</table>
+<?php
+echo $this->form()->closeTag();
+?>

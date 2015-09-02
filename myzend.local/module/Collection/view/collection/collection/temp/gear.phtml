@@ -1,0 +1,108 @@
+<table class="all-about-collection">
+    <tr>
+        <td id="collection-options-wrapper-td" valign="top" width="150px">
+            <div id="col-opt-desc-text" class="box-box-box">NARROW RESULT</div>
+            <div class="collection-options-wrapper">
+                <b>
+                    <div id="pt-click" class="col-opt">
+                        <span class="popup-arrow-right">&#9660;</span>
+                        <span class="popup-arrow-down">&#9658;</span>
+                        PRODUCT TYPE
+                    </div>
+                    <div id="pt-popup" class="col-opt-child-active">
+                        <ul>
+                            <li id="0" class="coll-filters"><a href="/collection"><span>ALL</span></a>&nbsp;(<?=$this->collectionItemCount();?>)</li>
+                            <li id="1" class="coll-filters"><a href="/collection/shoes"><span>SHOES</span></a>&nbsp;(<?=$this->collectionItemCount('shoes');?>)</li>
+                            <li id="2" class="coll-filters"><a href="/collection/clothes"><span>CLOTHES</span></a>&nbsp;(<?=$this->collectionItemCount('clothes');?>)</li>
+                            <li id="3" class="coll-filters-active"><span>GEAR</span>&nbsp;(<?=$this->collectionItemCount('gear');?>)</li>
+                        </ul>
+                    </div>
+                </b>
+            </div>
+            <div class="collection-options-wrapper">
+                <b>
+                    <div id="pt-click" class="col-opt">
+                        <span class="popup-arrow-right">&#9658;</span>
+                        <span class="popup-arrow-down">&#9660;</span>
+                        PRICE
+                    </div>
+                    <div id="pt-popup" class="col-opt-child">
+                        <ul>
+                            <li id="desc" class="coll-filters">&nbsp;<span>FROM HI</span></li>
+                            <li id="asc" class="coll-filters">&nbsp;<span>FROM LOW</span></li>
+                            <li>&nbsp;<input type="number " size="10" placeholder="exact price" /></li>
+                        </ul>
+                    </div>
+                </b>
+            </div>
+            <div class="collection-options-wrapper">
+                <b>
+                    <div id="pt-click" class="col-opt">
+                        <span class="popup-arrow-right">&#9658;</span>
+                        <span class="popup-arrow-down">&#9660;</span>
+                        COLOR
+                    </div>
+                    <div id="pt-popup-color" class="col-opt-child">
+                        <?=$this->partial('collection/collection/partial/color-picker.phtml');?>
+                    </div>
+                </b>
+            </div>
+        </td>
+        <td>
+            <div id="collection-main-wrapper">
+                <div class="box-box-box"><div id="sort-info"></div></div>
+                <?php foreach ($collection as $item) : //var_dump($collection)
+                    $i++;
+                    ?>
+                    <!--  -->
+                    <div id="tableGoods">
+                        <table class="coll-table" data-num="<?=$item->item_id;?>">
+                            <tr>
+                                <td colspan="2">
+                                    <p class="zf-midnightblue"><?php echo $this->escapeHtml($item->item_name) ;?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="collection-img-wrapper" colspan="2" style="background-image: url(<?php echo  Collection\Model\Collection::COLL_IMG_PATH.$this->escapeHtml($item->img_link);?>)">
+                                    <a href="<?php echo $this->url('collection', array('action'=>'item-details', 'id' => $item->item_id));?>">
+                                        <div class="goodsTable-price">$&nbsp;<?php echo $item->item_price ;?></div>
+                                        <div class="goodsTable-price-holder"></div>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="mast-have-height">
+                                <td>
+                                    <!-- in case of ordinary get url request will need
+                            <span class="zf-midnightblue"><a href="<?php echo $this->url('collection',
+                                        array('action'=>'item-details', 'id' => $item->item_id));?>">details</a></span>
+                                -->
+                                </td>
+                                <td align="right">
+                                    <!-- in case of ordinary get url request will need -->
+                                    <!--
+                            <span class="zf-midnightblue"><a href="<?php echo $this->url('collection',
+                                        array('action'=>'item-details', 'id' => $item->item_id));?>">to cart</a></span>
+                            -->
+                                    <div id="this-to-cart-<?=$item->item_id;?>" class="to-cart-this" alt="[ to cart ]" data-num="<?=$item->item_id;?>"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </td>
+    </tr>
+</table>
+<!--
+<!-- SORT ICON ->
+<div id="sort-collection">
+    <div id="coll-filters">
+        <div id="DESC" class="coll-filters"><img src="/img/hi-low-sort.png" alt="[ hi ]" /></div>
+        <div><span>&nbsp;sort&nbsp;</span></div>
+        <div id="ASC" class="coll-filters"><img src="/img/low-hi-sort.png"  alt="[ low ]" /></div>
+    </div>
+</div>
+-->
+<!-- TO-CART-CONFIRM -->
+<div id="collection-overlay"></div>
+<div id="to-cart-confirm"></div>

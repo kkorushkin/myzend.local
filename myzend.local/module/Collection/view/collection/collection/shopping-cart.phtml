@@ -1,0 +1,13 @@
+<?php
+echo $this->sessid.'<br />';
+echo $guest_session->sessid.'<br />';
+foreach($details as $item){
+    echo 'id '.$item->id.'<br />';
+    echo $item->item_name.'<br />';
+    echo $item->b_name.'<br />';
+    echo $item->item_price.' $<br />';
+    ?>
+    <img src="<?php echo Collection\Model\Collection::COLL_IMG_PATH.$item->img_link;?>" />
+<?php
+
+}

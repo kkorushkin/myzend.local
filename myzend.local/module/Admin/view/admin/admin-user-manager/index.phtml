@@ -1,0 +1,28 @@
+<a class="" href="<?php echo $this->url('user-manager',array(
+    'action' => 'add'));?>">[ add new user ]</a>
+<a class="" href="<?php echo $this->url('user-manager',array(
+    'action' => 'add'));?>">[ mass mailing ]</a>
+<tr>
+<hr>
+<table class="table" id="tableUsers">
+        <th>ID</th>
+        <th>NAME</th>
+        <th>EMAIL</th>
+        <th>ROLE</th>
+        <th colspan="3"></th>
+    </tr>
+    <?php foreach ($users as $item) : ?>
+    <tr id="<?php echo ++$i ;?>">
+        <td><?php echo $this->escapeHtml($item->user_id);?></td>
+        <td><?php echo $this->escapeHtml($item->user_name);?></td>
+        <td><?php echo $this->escapeHtml($item->user_email);?></td>
+        <td><?php echo $this->escapeHtml($item->user_role);?></td>
+        <td class="actionBtn"><a class="btn btn-success pull-right" href="<?php echo $this->url('user-manager',
+                array('action'=>'edit', 'id' => $item->user_id));?>">Edit</a></td>
+        <td id="delete-show-modal" class="actionBtn"><a class="btn btn-success pull-left" href="<?php echo $this->url('user-manager',
+                array('action'=>'delete', 'id' => $item->user_id));?>">Delete</a></td>
+        <td id="delete-show-modal" class="actionBtn"><a class="btn btn-success pull-left" href="<?php //echo $this->url('',
+                //array('action'=>'', 'id' => $item->user_id));?>">Mail</a></td>
+    </tr>
+<?php endforeach; ?>
+</table>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<?php
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttribute('action', $this->url(NULL,
+        array('controller'=>'Manager', 'action' => 'process')));
+    $form->setAttribute('method', 'post');
+    echo $this->form()->openTag($form);
+?>
+<dl class="zend_form">
+    <dd><?php
+        echo $this->formElement($form->get('user_id'));
+        echo $this->formElementErrors($form->get('user_id'));
+        ?></dd>
+    <dt><?php echo $this->formLabel($form->get('user_name')); ?></dt>
+    <dd><?php
+        echo $this->formElement($form->get('user_name'));
+        echo $this->formElementErrors($form->get('user_name'));
+        ?></dd>
+    <dt><?php echo $this->formLabel($form->get('user_email')); ?>
+    </dt>
+    <dd><?php
+        echo $this->formElement($form->get('user_email'));
+        echo $this->formElementErrors($form->get('user_email'));
+        ?></dd>
+    <dt><?php echo $this->formLabel($form->get('user_role')); ?>
+    </dt>
+    <dd><?php
+        echo $this->formElement($form->get('user_role'));
+        echo $this->formElementErrors($form->get('user_role'));
+        ?></dd>
+    <dd><?php
+        echo $this->formElement($form->get('submit'));
+        echo $this->formElementErrors($form->get('submit'));
+        ?></dd>
+</dl>
+<?php echo $this->form()->closeTag($form) ;?>
+</body>
+</html>

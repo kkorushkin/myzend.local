@@ -1,0 +1,31 @@
+<?php echo $this->headScript()->prependFile($this->basePath('js/price-slider/jquery-ui-slider-pips.js'));?>
+<?php echo $this->headLink()->prependStylesheet($this->basePath('css/flick/jquery-ui.css'));?>
+<?php echo $this->headLink()->prependStylesheet($this->basePath('js/price-slider/jquery-ui-slider-pips.css'));?>
+
+<div class="price-slider-wrapper">
+    <input type="text" class="price-slider-label-output" id="label-output-min" data-num="10" value="$ 10 :FROM" />
+    <input type="text" class="price-slider-label-output" id="label-output-max" data-num="500" value="TO: $ 500" />
+    <div style="clear: both;"></div>
+    <div class="slider"></div>
+    <div id="price-slider-submit" align="center">filter</div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".slider")
+            .slider({
+                min: 10,
+                max: 500,
+                range: true,
+                values: [5, 500],
+                step: 10
+            })
+            .slider("float")
+            .on("slide", function(e,ui) {
+                $("#label-output-min").attr('value', '$ ' + ui.values[0] + ' :FROM');
+                $("#label-output-min").attr('data-num', ui.values[0]);
+                $("#label-output-max").attr('value', 'TO: ' + '$ ' + ui.values[1]);
+                $("#label-output-max").attr('data-num', ui.values[1]);
+            });
+    });
+</script>

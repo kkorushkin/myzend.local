@@ -1,0 +1,92 @@
+<?php
+/*
+ * Для загрузки и настройки модуля в Zend Framework 2 существует Менеджер Модуля(ModuleManager) .
+ * Он будет искать файл  Module.php в корневом каталоге модуля (module/Collection)
+ * в котором должен находиться класс с названием CollectionModule. Это означает,
+ * что все классы в модуле будут в пространстве имен с названием модуля(совпадает с именем директории модуля) .
+ */
+namespace Collection;
+
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+//db
+use Collection\Model\Collection;
+use Collection\Model\CollectionTable;
+use Collection\Model\Carts;
+use Collection\Model\CartsTable;
+//forms
+use Collection\Form\SearchForm;
+use Collection\Form\SearchFormFilter;
+use Collection\Form\OrderForm;
+use Collection\Form\OrderFormFilter;
+
+//view helper
+
+class Module{
+
+    public function getAutoloaderConfig(){
+        return array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/autoload_classmap.php',),
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,),
+            ),
+        );
+    }
+
+    public function getConfig(){
+        return include __DIR__ . '/config/module.config.php';
+    }
+    /*
+     * ModuleManager автоматически вызывает методы getAutoloaderConfig() и getConfig().
+     */
+    public function getServiceConfig(){
+        return array(
+            'factories' => array(
+                //DB
+                'CollectionTable' => function ($sm) {
+                    $tableGateway = $sm->get('CollectionTableGateway');
+                    $table = new CollectionTable($tableGateway);
+                    return $table;
+                },
+                'CollectionTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Collection());
+                    return new TableGateway('items', $dbAdapter, null, $resultSetPrototype);
+                },
+                'CartsTable' => function ($sm) {
+                    $tableGateway = $sm->get('CartsTableGateway');
+                    $table = new CartsTable($tableGateway);
+                    return $table;
+                },
+                'CartsTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Carts());
+                    return new TableGateway('carts', $dbAdapter, null, $resultSetPrototype);
+                },
+
+                //Forms
+                'SearchForm' => function($sm){
+                    $form = new SearchForm();
+                    $form->setInputFilter($sm->get('SearchFormFilter'));
+                    return $form;
+                },
+                'OrderForm' => function($sm){
+                    $form = new OrderForm();
+                    $form->setInputFilter($sm->get('OrderFormFilter'));
+                    return $form;
+                },
+                //Filters
+                'SearchFormFilter' => function($sm){
+                    return new SearchFormFilter();
+                },
+                'OrderFormFilter' => function($sm){
+                    return new OrderFormFilter();
+                },
+            ),
+        );
+    }
+}

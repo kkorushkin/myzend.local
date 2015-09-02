@@ -1,0 +1,132 @@
+.container{
+    width: 100%;
+    margin: 0;
+}
+#cart-view-modal-k{
+    z-index: 9998;
+    display: none;
+    position: fixed;
+    top: 5px;
+    right: 45px;
+
+    background-color: #c7ddef;
+    border-radius: 5px;
+    box-shadow: -2px 4px 5px 0px rgba(0,0,0,0.75);
+}
+#cart-view-modal-k > .dark{
+    color: #0D4762;
+}
+#cart-view-modal-k > .dark > a{
+    color: #0073ea;
+}
+#cart-wrapper-k{
+    background-color: #c7ddef;
+    /*filter: blur(5px);
+    opacity: 0.7;*/
+}
+.cart-item-wrapper{
+    margin: 5px 5px 35px 5px;
+    float: left;
+    width: 90px;
+    height: 110px;
+    box-shadow: -2px 4px 5px 0px rgba(0,0,0,0.75);
+}
+.cart-item-img{
+    clear: both;
+    float: left;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 90px;
+    height: 90px;
+}
+.cart-informer{
+    text-align: center;
+    padding: 10px;
+    font-size: x-large;
+    font-weight: bolder;
+    float: left;
+    color: #080808;
+}
+#cart-checkout-btn{
+
+}
+.cart-item-price-del{
+    width: inherit;
+    height: 20px;
+    background-color: #245269;
+}
+.cart-item-price{
+    clear: both;
+    float: left;
+    height: 20px;
+    padding-left: 5px;
+    background-color: #245269;
+    color: #c4e3f3;
+    font-weight: 900;
+}
+.cart-item-del{
+    cursor: pointer;
+    display: none;
+    float: right;
+    width: 20px;
+    height: 20px;
+    background-image: url('../img/close-x.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+.cart-item-quantity-wrapper{
+    text-align: center;
+    height: 20px;
+    clear: both;
+    background-color: #245269;
+    color: #c4e3f3;
+}
+.cart-item-quantity{
+    text-align: center;
+    border: hidden;
+    height: 20px;
+    width: 45px;
+    padding-right: 5px;
+    background-color: #245269;
+    color: #c4e3f3;
+    font-weight: 900;
+}
+#cart-total-price{
+    float: right;
+}
+#cart-total-quantity{
+    float: left;
+}
+#cart-close-k{
+    margin-top: 5px;
+    cursor: pointer;
+    float: left;
+    height: 35px;
+    width: 100px;
+    background-image: url(../img/cart-close-4.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+ }
+#plus-cart-item{
+    float:left;
+}
+#minus-cart-item{
+    float:right;
+}
+.quantity-change{
+    display:none;
+    font-weight: 900;
+    font-size: large;
+    position: relative;
+    top:-20px;
+    color: #c4e3f3;
+
+}
+.quantity-change > div{
+    height: 20px;
+    border: 1px solid #c4e3f3;
+    cursor: pointer;
+}

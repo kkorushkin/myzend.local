@@ -1,0 +1,18 @@
+<div class="collection-options-wrapper">
+    <b>
+        <div id="pt-click" class="col-opt">
+            <span class="popup-arrow-right">&#9658;</span>
+            <span class="popup-arrow-down">&#9660;</span>
+            PRODUCT TYPE
+        </div>
+        <div id="pt-popup" class="col-opt-child" data-bread="">
+            <ul>
+                <li class="type-filters-active"  data-bread=""></li>
+                <li id="" class="type-filters" data-bread=" > ALL"><span>ALL</span>&nbsp;(<?=$this->collectionItemCount();?>)</li>
+                <li id="shoes" class="type-filters" data-bread=" > SHOES"><span>SHOES</span>&nbsp;(<?=$this->collectionItemCount('shoes');?>)</li>
+                <li id="clothes" class="type-filters" data-bread=" > CLOTHES"><span>CLOTHES</span>&nbsp;(<?=$this->collectionItemCount('clothes');?>)</li>
+                <li id="gear" class="type-filters" data-bread=" > GEAR"><span>GEAR</span>&nbsp;(<?=$this->collectionItemCount('gear');?>)</li>
+            </ul>
+        </div>
+    </b>
+</div>
