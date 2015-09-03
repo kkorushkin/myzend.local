@@ -4,20 +4,24 @@ $(document).ready(function(){
     $('.type-filters').click(function () {
         $('.type-filters-active').css('font-size','').attr('class','type-filters');
         $(this).css('font-size','medium').attr('class','type-filters-active');
-        var method = $('.price-filters-active').attr('id');
         var category = $('.type-filters-active').attr('id');
+        /*
+         var method = $('.price-filters-active').attr('id');
         var more_then = $('#label-output-min').data('num');
         var less_then = $('#label-output-max').data('num');
         var color = $('.color-filters-active').data('color');
+        */
         $.ajax({
             type: "POST",
             url: "/collection/sort-collection-ajax",
             data: {
-                method: method,
                 category: category,
+                /*
+                method: method,
                 more_then: more_then,
                 less_then: less_then,
                 color: color
+                */
             },
             async: false,
             success: function (data) {
@@ -25,7 +29,7 @@ $(document).ready(function(){
                     .html(data);
             }
         });
-        $('#sort-info').text($('.type-filters-active').data('bread') + $('.price-filters-active').data('bread') +  $('.color-filters-active').data('bread'));
+        $('#sort-info').text($('.type-filters-active').data('bread'));
     });
 // NOTICE:
     $('.price-filters').click(function () {
@@ -160,21 +164,21 @@ $(document).ready(function(){
                 .css('display', 'block');
             $('#collection-main-wrapper')
                 .css('filter', 'blur(3px)');
-            // CHANGE PRICE DEPENDING OF QUANTITY WITH KEYBOARD
+// CHANGE PRICE DEPENDING OF QUANTITY WITH KEYBOARD
             $('#to-cart-confirm-item_quantity').keyup(function(){
                 var i = $('#to-cart-confirm-item_price').data('num');
                 var j = $(this).val();
                 if(j == 0){
                     alert('can\'t order zero qty.');
                     $('#to-cart-confirm-item_quantity').val(1);
-                }else if(j > 10000){
+                }else if(j > 1000){
                     alert('can\'t order more then 10000 per order.');
-                    $('#to-cart-confirm-item_quantity').val(10000);
+                    $('#to-cart-confirm-item_quantity').val(1000);
                 }
-                //alert(i + ' and ' + j)
-                $('#to-cart-confirm-item_price').text((i * j) + ' $');
+//console.log(i + ' and ' + j)
+                $('#to-cart-confirm-item_price').text(' $' + (i * j))
             });
-            // CHANGE PRICE DEPENDING OF QUANTITY WITH '- +' FORM BUTTON
+// CHANGE PRICE DEPENDING OF QUANTITY WITH '- +' FORM BUTTONS
             $('.math-sign').click(function(){
                 var i = parseInt($('#to-cart-confirm-item_price').data('num'));
                 var j = parseInt($('#to-cart-confirm-item_quantity').val());
@@ -184,29 +188,36 @@ $(document).ready(function(){
                         $('#to-cart-confirm-item_quantity').val(j);
                         if(j < 1){
                             j = 1;
-                            alert('can\'t order zero qty.'); $('#to-cart-confirm-item_quantity').val(1);
+                            alert('can\'t order zero qty.');
+                            $('#to-cart-confirm-item_quantity').val(1);
                         }
-                        $('#to-cart-confirm-item_price').text('$' + (i * j));
+                        $('#to-cart-confirm-item_price').text('$' + (i * j))
                         break;
                     case '+':
                         j++;
                         $('#to-cart-confirm-item_quantity').val(j);
-                        if(j > 10000){
-                            j = 10000;
+                        if(j > 1000){
+                            j = 1000;
                             alert('can\'t order more then 10000 per order.');
-                            $('#to-cart-confirm-item_quantity').val(10000);
+                            $('#to-cart-confirm-item_quantity').val(1000);
                         }
-                        $('#to-cart-confirm-item_price').text('$' + (i * j));
+                        $('#to-cart-confirm-item_price').text('$' + (i * j))
+console.log($('#to-cart-confirm-item_price').data('num'));
                         break;
                     default:
                         alert('default');
                 }
-                //alert(i + ' and ' + j)
                 //$('#to-cart-confirm-item_price').text((i * j) + ' $');
             });
 // NOTICE: ADD COLLECTION ITEM TO DB_CARTS
             // FADE OUT BLUR EFFECT, HIDE OVERLAY, HIDE CONFIRMATION DIALOG
             $('#to-cart-confirm-btn').click(function(){
+                var item_id = $('#to-cart-confirm-item_id').val();
+                var item_quantity = $('#to-cart-confirm-item_quantity').val().trim();
+                var item_price = $('#to-cart-confirm-item_price').data('num');
+//console.log(item_id);
+//console.log(item_quantity);
+//console.log(item_price);
                 $('#shopping-cart-img').attr('src','/img/cart-header-full.png');
                 $('#to-cart-confirm')
                     .fadeOut()
@@ -217,11 +228,11 @@ $(document).ready(function(){
                 $('#collection-main-wrapper')
                     .css('filter', 'blur(0px)');
                 $.post("/collection/to-cart", {
-                    item_id: $('#to-cart-confirm-item_id').val(),
-                    item_quantity: $('#to-cart-confirm-item_quantity').val().trim(),
-                    item_price: $('#to-cart-confirm-item_price').text()
+                    item_id: item_id,
+                    item_quantity: item_quantity,
+                    item_price: item_price
                 },function(data){
-                    alert(data);
+console.log(data);
                 });
             });
             // FADE OUT BLUR EFFECT, HIDE OVERLAY, HIDE CONFIRMATION DIALOG
@@ -252,7 +263,7 @@ $(document).ready(function(){
         $(this).children('.popup-arrow-right').toggle();
     });
 // NOTICE: ADD COLOR TO DIV BACKGROUND VIA DATA-COLOR ATTRIBUTE
-    $('.color-filters').each(function(){
+    $('.color-filters, .color-filters-2').each(function(){
         $(this).css('background-color',$(this).data('color'));
     });
 });

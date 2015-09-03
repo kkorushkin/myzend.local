@@ -63,11 +63,14 @@ class CollectionTable{
         $select->where->equalTo('items.item_id', $item_id);
         switch ($param):
             case 'single':
-                $select->group('items.item_id');break;
+                $select->group('items.item_id');
+                $rowset = $this->tableGateway->selectWith($select);
+                $resultSet = $rowset->current();
+                break;
             case 'group':
+                $resultSet = $this->tableGateway->selectWith($select);
                 break;
         endswitch;
-        $resultSet = $this->tableGateway->selectWith($select);
         return $resultSet;
     }
 // NOTICE:
@@ -127,6 +130,37 @@ class CollectionTable{
             ->where->equalTo('cat_name', $item_category);
         $resultSet = $this->tableGateway->selectWith($select)->toArray();
         return $resultSet[0]['cat_id'];
+    }
+// NOTICE:
+    public function updateCollection($item_id, $current_qty){
+//die($item_id.$item_qty);
+        $result = $this->tableGateway->update(
+            array('item_quantity' => $current_qty,),
+            array('item_id' => $item_id)
+        );
+        $this->updateQtyStatus($item_id, $current_qty);
+        return $result;
+    }
+    protected function updateQtyStatus($item_id, $current_qty){
+        $current_qty = (int)$current_qty;
+        if($current_qty >= 50){
+            return $this->tableGateway->update(
+                array('item_qty_status' => 2),
+                array('item_id' => $item_id)
+            );
+        }
+        if($current_qty < 50 && $current_qty > 0){
+            return $this->tableGateway->update(
+                array('item_qty_status' => 1),
+                array('item_id' => $item_id)
+            );
+        }
+        if($current_qty <= 0){
+            return $this->tableGateway->update(
+                array('item_qty_status' => 0),
+                array('item_id' => $item_id)
+            );
+        }
     }
 
 }

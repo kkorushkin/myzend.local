@@ -19,11 +19,15 @@ class AppLayoutViewHelperAuth extends AbstractHelper implements ServiceLocatorAw
     public  function  __invoke(){
         if($this->getAuthService()->hasIdentity()){
             $identity = $this->getAuthService()->getIdentity();
-            foreach($identity as $k => $v){
-                $auth[$k] = $v;
+            if(! is_string($identity)){
+                foreach($identity as $k => $v){
+                    $auth[$k] = $v;
+                }
+            }else{
+                $auth['user_email'] = $identity;
             }
 //die(var_dump($auth));
-            return $auth['user_email'].'<br /><a href="/collection/logoutMe">[ logout ]</a><a href="">[ your profile ]</a>';
+            return $auth['user_email'].'<br /><a href="/collection/logoutMe">[ logout ]</a><a href=""><strike>[ your profile ]</strike></a>';
         }else{
             return 'welcome&nbsp;guest<br /><a href="/users/login">[ login]</a><a href="/users/registration">[ registration ]</a>';
         }

@@ -34,13 +34,7 @@ $(document).ready(function() {
         });
     });
 // NOTICE: CLOSE CART DETAILS MODAL
-    $('#cart-close-k').click(function() {
-        $(this)
-            .fadeOut();
-        //.css('display', 'none');
-        $('#cart-view-modal-k')
-            .fadeOut();
-        //.css('display', 'none');
-
+    $('.cart-informer').click(function(){
+        $('#cart-view-modal-k').fadeOut();
     });
 });

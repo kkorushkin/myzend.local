@@ -6,7 +6,7 @@ return array(
         'Collection',
         'Users',
         'Admin',
-        'Order',
+        'Orders',
     ),
     'module_listener_options' => array( // содержит маски путей к конфигурационным файлам модулей.
         'config_glob_paths'    => array( // Регулярное выражение 'config/autoload/{,*.}{global,local}.php' означает,

@@ -4,10 +4,10 @@
 <div id="to-cart-confirm"></div>
 <table id="item-detailes-table">
     <tr>
-        <td id="item-details-img-td" rowspan="4" style="background-image: url(<?php echo Collection\Model\Collection::COLL_IMG_PATH.$details->img_link;?>);">
+        <td id="item-details-img-td" rowspan="4" style="background-image: url('<?=Collection\Model\Collection::COLL_IMG_PATH.$details->img_link;?>');">
             <div class="zoom-img"></div>
             <div id="is-in-cart-img"><img src="<?=$this->is_in_cart;?>" /></div>
-            <!--<img id="item-details-img" src="<?php echo Collection\Model\Collection::COLL_IMG_PATH.$details->img_link;?>" />-->
+            <!--<img id="item-details-img" src="<?=Collection\Model\Collection::COLL_IMG_PATH.$details->img_link;?>" />-->
         </td>
         <td rowspan="4">
             <?php

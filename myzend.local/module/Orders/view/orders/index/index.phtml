@@ -47,6 +47,8 @@
 <?php
     foreach($order_collection as $item){
 ?>
+        <input type="hidden" name="item_id" value="<?=$item->item_id;?>" />
+        <input type="hidden" name="cart_id" value="<?=$item->cart_id;?>" />
                 <tr>
                     <td>
                         <b><?=$item->item_id;?>::<?=$item->item_name;?></b>

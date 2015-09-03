@@ -4,10 +4,12 @@ namespace Admin\Form;
 
 use Zend\Form\Form;
 
+
 class AdminCollectionManagerForm extends Form{
 
     public function __construct($name = null){
         parent::__construct('collection');
+
         $this->setAttributes(array(
             'method'=>'post'
         ));
@@ -116,7 +118,7 @@ class AdminCollectionManagerForm extends Form{
             ),
         ));
         $this->add(array(
-            'name' => 'img_link',
+            'name' => 'img',
             'type'  => 'Zend\Form\Element\File',
             'attributes' => array(
             ),
@@ -133,4 +135,5 @@ class AdminCollectionManagerForm extends Form{
             ),
         ));
     }
+
 }

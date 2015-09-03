@@ -47,7 +47,7 @@ class IndexController extends AbstractActionController {
     }
 
     protected function countCarts(){
-        return $this->getServiceLocator()->get('CartsTable')->selectCart();
+        return $this->getServiceLocator()->get('CartsTable')->countCartByStatus();
     }
     protected function countCartsSum(){
         $data = $this->getServiceLocator()->get('CartsTable')->selectSumCartPrice(null, 0);
@@ -58,7 +58,7 @@ class IndexController extends AbstractActionController {
     }
 
     protected function countOrders(){
-        return $this->getServiceLocator()->get('CartsTable')->selectCart(null, 1);
+        return $this->getServiceLocator()->get('CartsTable')->countCartByStatus(null, 1);
     }
     protected function countOrdersSum(){
         $data = $this->getServiceLocator()->get('CartsTable')->selectSumCartPrice(null, 1);

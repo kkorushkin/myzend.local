@@ -15,6 +15,7 @@ class AdminCollection {
     public $cat_name;
     public $subcat_name;
     public $item_quantity;
+    public $item_qty_status;
     public $img_link;
 
     const COLL_IMG_PATH = '/img/CollectionImages/';
@@ -32,6 +33,7 @@ class AdminCollection {
         $this->cat_name = (isset($data['cat_name'])) ? $data['cat_name'] : null;
         $this->subcat_name = (isset($data['subcat_name'])) ? $data['subcat_name'] : null;
         $this->item_quantity = (isset($data['item_quantity'])) ? $data['item_quantity'] : null;
+        $this->item_qty_status = (isset($data['item_qty_status'])) ? $data['item_qty_status'] : null;
         $this->img_link = (isset($data['img_link'])) ? $data['img_link'] : 'No_image_available.jpg';
 
     }

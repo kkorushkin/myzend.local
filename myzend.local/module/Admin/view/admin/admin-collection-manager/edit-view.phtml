@@ -44,6 +44,10 @@ $this->headTitle($title);
         <dd><?php echo $this->formElement($form->get('item_quantity'));
             echo $this->formElementErrors($form->get('item_quantity'));?>
         </dd>
+        <dt><?php echo $this->formLabel($form->get('item_quantity'));?></dt>
+        <dd><?php echo $this->formElement($form->get('item_quantity'));
+            echo $this->formElementErrors($form->get('item_quantity'));?>
+        </dd>
         <dt><?php echo $this->formLabel($form->get('item_category'));?></dt>
         <dd><?php echo $this->formElement($form->get('item_category')->setAttribute('options', ($this->categories)));
             echo $this->formElementErrors($form->get('item_category'));?>

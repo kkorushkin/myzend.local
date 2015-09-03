@@ -2,6 +2,8 @@
 
 namespace Admin\Model;
 
+use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Insert;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
@@ -79,7 +81,10 @@ class AdminCollectionTable {
     }
 
     public function saveItem(AdminCollection $item){
-        //die(var_dump($item));
+//die(var_dump($item));
+
+        $item_qty_status = $this->updateQtyStatusOnAdd($item->item_quantity);
+
         $data = array(
             'item_name' => $item->item_name,
             'item_brand' => $item->item_brand,
@@ -87,18 +92,41 @@ class AdminCollectionTable {
             'item_price' => $item->item_price,
             'item_category' => $item->item_category,
             'item_sub_category' => $item->item_sub_category,
+            'item_quantity' => $item->item_quantity,
+            'item_qty_status' => $item_qty_status
         );
-        //die(var_dump($data));
+//die(var_dump($data));
+
         $item_id = $item->item_id;
         //die($item_id.__METHOD__);
         if ($item_id == 0) {
             $this->tableGateway->insert($data);
+            $id = $this->tableGateway->lastInsertValue;
+//die(var_dump($item));
+            $adapter = $this->tableGateway->getAdapter();
+            $otherTable = new TableGateway('images', $adapter);
+            return $otherTable->insert(array(
+                'img_item_id' => $id,
+                'img_link' => $item->img_link
+            ));
         } else {
             if ($this->getItem($item_id)) {
                 $this->tableGateway->update($data, array('item_id' => $item_id));
             } else {
                 throw new \Exception('Form id does not exist');
             }
+        }
+    }
+    protected function updateQtyStatusOnAdd($current_qty){
+        $current_qty = (int)$current_qty;
+        if($current_qty >= 50){
+            return 2;
+        }
+        if($current_qty < 50 && $current_qty > 0){
+            return 1;
+        }
+        if($current_qty <= 0){
+            return 0;
         }
     }
 

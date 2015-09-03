@@ -9,7 +9,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="collection-img-wrapper" colspan="2" style="background-image: url(<?php echo  Collection\Model\Collection::COLL_IMG_PATH.$this->escapeHtml($item->img_link);?>)">
+                <td class="collection-img-wrapper" colspan="2" style="background-image: url('<?=Collection\Model\Collection::COLL_IMG_PATH.$this->escapeHtml($item->img_link);?>')">
                     <a href="<?php echo $this->url('collection', array('action'=>'item-details', 'id' => $item->item_id));?>">
                         <div class="goodsTable-price">$&nbsp;<?php echo $item->item_price ;?></div>
                     </a>

@@ -17,10 +17,10 @@ class AdminCollectionManagerController extends AbstractActionController{
     public function indexAction(){
         if($this->identifyThis()){
             $session = new Container('admin');
-            $user_email = $session->user_email;
+            //$user_email = $session->user_email;
             $vm =  new AdminViewModel(array(
                     'collection' => $this->getAdminCollectionTable()->fetchAll(),
-                    'user_email' => $user_email,
+                    //'user_email' => $user_email,
                 )
             );
             return $vm->setTerminal(true);
@@ -76,25 +76,34 @@ class AdminCollectionManagerController extends AbstractActionController{
     }
 //NOTICE:
     public function addAction(){
-//die(var_dump($this->getRequest()->getFiles()->toArray()));
 //die(var_dump($this->getRequest()->getPost()));
-        $file = $this->getRequest()->getFiles()->toArray();
+        $item_cat_id = $this->getRequest()->getPost()->item_category;
+        $img_folder_name = $this->getRequest()->getPost()->item_name;
+        $item_sub_cat_id = $this->getRequest()->getPost()->item_sub_category;
+        $item_cat_name = $this->getAdminCollectionTable()->fetchCategories();
+        $item_sub_cat_name = $this->getAdminCollectionTable()->fetchSubCategories();
+        $item_cat_name = $item_cat_name[$item_cat_id];
+        $item_sub_cat_name = $item_sub_cat_name[$item_sub_cat_id];
+//die(var_dump($this->getRequest()->getFiles()->toArray()));
+        $file = $this->getRequest()->getFiles();
         $adapter = new Http();
         $root_path = getcwd(); // app root path
-
-        if(! is_dir($root_path.'/public/img/upload')){
-            mkdir($root_path.'/public/img/upload');
+        if(! is_dir($root_path.'/public/img/CollectionImages/images/'.$item_cat_name.'/'.$item_sub_cat_name.'/'.$img_folder_name.'')){
+            mkdir($root_path.'/public/img/CollectionImages/images/'.$item_cat_name.'/'.$item_sub_cat_name.'/'.$img_folder_name.'');
         }
-
-        $adapter->setDestination($root_path.'/public/img/upload');
-/*
+        $file_name = $file->img['name'];
+        $img_path = '/public/img/CollectionImages/images/'.$item_cat_name.'/'.$item_sub_cat_name.'/'.$img_folder_name.'';
+        $adapter->setDestination($root_path.$img_path);
+//die($adapter->getDestination());
+        $img_link = 'images/'.$item_cat_name.'/'.$item_sub_cat_name.'/'.$img_folder_name.'';
         if (!$adapter->receive()) {
             $messages = $adapter->getMessages();
             echo implode("\n", $messages);
         }
-*/
+
         $addFormView = $this->getServiceLocator()->get('AdminCollectionManagerForm');
         $request = $this->getRequest();
+//die(var_dump($request->getPost()));
         if ($request->isPost()) {
             $addFormView->setData($request->getPost());
         }
@@ -112,9 +121,12 @@ class AdminCollectionManagerController extends AbstractActionController{
             $vm->setTemplate('/admin/admin-collection-manager/add-form-view');
             return $vm->setTerminal(true);
         }
+
         if ($addFormView->isValid()) {
             $item = new AdminCollection();
             $item->exchangeArray($addFormView->getData());
+            $item->img_link = $img_link;
+//die(var_dump($item));
             $this->getAdminCollectionTable()->saveItem($item);
 // Redirect to list of collection
             return $this->redirect()->toRoute(null, array(

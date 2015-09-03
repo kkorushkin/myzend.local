@@ -65,9 +65,9 @@ class CollectionController extends AbstractActionController{
         $item_id = $this->getRequest()->getPost()->value;
         $guest_session = new Container();
         $cart_id =$guest_session->getDefaultManager()->getId();
-        $item = $this->getCollectionTable()->fetchById($item_id)->toArray();
+        $item = $this->getCollectionTable()->fetchById($item_id);
         $vm = new ViewModel(array(
-            'details' => $item[0],
+            'details' => $item,
             'is_in_cart' => $this->isInCart($cart_id, $item_id),
         ));
         $vm->setTerminal(true);
@@ -76,30 +76,41 @@ class CollectionController extends AbstractActionController{
 // NOTICE: get post data from collection page to-cart link via ajax
     public function toCartAction(){
         $item_id = $this->getRequest()->getPost()->item_id;
-        $item_quantity = $this->getRequest()->getPost()->item_quantity;
-        $item_price = $this->getRequest()->getPost()->item_price;
-//die($item_id.'_'.$item_quantity.'_'.$item_price);
+        $order_quantity = $this->getRequest()->getPost()->item_quantity;
+        $table = $this->getCollectionTable()->fetchById($item_id);
+// check stock
+        /*
+        $item_qty = $table->item_quantity;
+        if($order_quantity > $item_qty){
+        }
+        echo $item_qty;
+die();
+        */
+        $item_price = $table->item_price;
+        $order_total= $item_price * $order_quantity;
         //$item_id = $this->params()->fromRoute('id'); // need if non-ajax request
         $guest_session = new Container();
         $guest_session->sessid = $guest_session->getDefaultManager()->getId();
 //die($guest_session->sessid);
         $user_id = $this->getUserId($guest_session->sessid);
-//die($user_id);
-        $toExchange = $this->getCollectionTable()->fetchById($item_id)->toArray();
-        //$toExchange = $this->toArray($details);
-        $toExchange[0]['cart_id'] = $guest_session->sessid;
-        $toExchange[0]['user_id'] = $user_id;
-        $toExchange[0]['item_quantity'] = $item_quantity;
-        $toExchange[0]['item_price'] = $item_price;
+//die(' id '.$item_id.' qty '.$item_quantity.' price '.$item_price.' user_id '.$user_id);
+// object Collection
+        $toExchange = $this->getCollectionTable()->fetchById($item_id);
+        $toExchange = (array)$toExchange;
+//die($toExchange['item_id']);
+        $toExchange['cart_id'] = $guest_session->sessid;
+        $toExchange['user_id'] = $user_id;
+        $toExchange['item_quantity'] = $order_quantity;
+        $toExchange['item_price'] = $order_total;
 
         $cart_item = new Carts();
-        $cart_item->exchangeArray($toExchange[0]);
+        $cart_item->exchangeArray($toExchange);
         $this->getCartsTable()->insertCart($cart_item);
     }
     protected function getUserId($cart_id){
 //die($cart_id);
         if(! is_null($this->identity())){
-            $identity = $this->identity()->user_email;
+            $identity = $this->identity();
 //die($identity);
             $user = $this->getUsersTable()->getUserByEmail($identity);
 //die($user->user_id);
@@ -109,9 +120,11 @@ class CollectionController extends AbstractActionController{
         }
         return $user_id;
     }
+
     public function getUsersTable(){
         return $usersTable = $this->getServiceLocator()->get('UsersTable');
     }
+
     public function sortCollectionAjaxAction(){
         $method = $this->getRequest()->getPost()->method;
         $category = $this->getRequest()->getPost()->category;

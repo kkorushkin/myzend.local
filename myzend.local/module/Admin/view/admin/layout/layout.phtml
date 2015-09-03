@@ -62,7 +62,7 @@
                 <!--<li class="active"><a href="<?php echo $this->url('home') ?>"><?php //echo $this->translate('Home') ?></a></li>-->
                 <li class="my-active"><a><?php echo $this->identity()->user_email;?></a></li>
                 <li class="my-active"><a href="<?php echo $this->url('admin', array('controller' => 'Auth', 'action' => 'logoutMe'));?>">[ logout ]</a></li>
-                <li class="my-active"><a href="<?php echo $this->url('collection') ?>"><?php echo $this->translate('Collection') ?></a></li>
+                <li class="my-active"><a href="<?php echo $this->url('collection') ?>">Site</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -70,12 +70,12 @@
 <div class="container">
     <a class="admin-menu-link" href="<?php echo $this->url('index', array(
         'controller'=>'Index', 'action'=>'index'));?>">[ main ]</a>
-    <a class="admin-menu-link" href="<?php echo $this->url('collection-manager', array(
-        'controller'=>'CollectionManager', 'action'=>'index'));?>">[ collection ]</a>
-    <a class="admin-menu-link" href="">[ orders ]</a>
-    <a class="admin-menu-link" href="<?php echo $this->url('user-manager', array(
-        'controller'=>'Index', 'action' => 'index'));?>">[ users ]</a>
+    <a class="admin-menu-link" href="<?php echo $this->url('collection-manager', array());?>">[ collection ]</a>
+    <a class="admin-menu-link" href="<?=$this->url('orders-manager', array());?>">[ orders ]</a>
+    <a class="admin-menu-link" href="<?php echo $this->url('user-manager', array());?>">[ users ]</a>
+    <!--
     <a class="admin-menu-link" href="">[ site background image ]</a>
+    -->
     <hr/>
     <?php echo $this->content; ?>
     <hr>

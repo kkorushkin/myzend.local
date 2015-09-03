@@ -5,7 +5,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Users\Controller\Index' => 'Users\Controller\IndexController',
-            'Users\Controller\Registation' => 'Users\Controller\RegistationController',
+            'Users\Controller\Registration' => 'Users\Controller\RegistrationController',
             'Users\Controller\Login' => 'Users\Controller\LoginController',
             //'Users\Controller\Manager' => 'Users\Controller\ManagerController',
         ),
@@ -44,16 +44,15 @@ return array(
                         ),
                     ),
                     'registration' => array(
-                        'type' => 'Literal',
+                        'type' => 'Segment',
                         'options' => array(
-                            'route' => '/registration',
-                            //'constraints' => array(
-                            //    'controller' => 'Index',
-                            //    'action' => 'index',
-                            //),
+                            'route' => '/registration[/:action]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
                             'defaults' => array(
-                                'controller' => 'Users\Controller\Registation',
-                                'action' => 'registation',
+                                'controller' => 'Users\Controller\Registration',
+                                'action' => 'registration',
                             ),
                         ),
                     ),

@@ -15,7 +15,7 @@ class IndexController extends AbstractActionController{
         $result = $this->getServiceLocator()->get('OrdersTable')->selectCartJoinCollection($cart_id);
 //die(var_dump($this->identity()));
         if($this->identity() && $result != 0){
-            $user = $this->getServiceLocator()->get('UsersTable')->getUserByEmail($this->identity()->user_email);
+            $user = $this->getServiceLocator()->get('UsersTable')->getUserByEmail($this->identity());
             $form = $this->getServiceLocator()->get('OrderForm');
             $form->setHydrator(new \Zend\Stdlib\Hydrator\ObjectProperty());
             $form->bind($user);
@@ -37,6 +37,16 @@ class IndexController extends AbstractActionController{
         $order_collection = $this->getItemIdList($cart_id);
         $total_price = $this->getCartTotalPrice($cart_id);
         //$who_is = $this->whoIs();
+        if(is_null($order_collection)){
+            $this->flashMessenger()
+                ->setNamespace('order_not_allowed')
+                ->addMessage('Purchase function not available yet. You must do some shopping first, or login and check cart.');
+
+            return $this->redirect()->toRoute('collection', array(
+                'controller' => 'collection',
+                'action' => 'index'
+            ));
+        }
         return new ViewModel(array(
             'order_form' => $form,
             'order_collection' => $order_collection,
@@ -68,6 +78,8 @@ class IndexController extends AbstractActionController{
         }
 //die(var_dump($this->getRequest()->getPost()));
         $cart_id = $this->getRequest()->getPost()->cart_id;
+        $item_id = $this->getRequest()->getPost()->item_id;
+
         if($this->getServiceLocator()->get('OrdersTable')->updateStatus($cart_id)){
             return $this->redirect()->toRoute('collection', array(
                 'controller' => 'Index',
@@ -75,7 +87,7 @@ class IndexController extends AbstractActionController{
                 ));
         }else{
             return $this->redirect()->toRoute(NULL, array(
-                'controller' => 'collection',
+                'controller' => 'Collection',
                     'action' => 'index'
                 ));
         }
@@ -106,7 +118,7 @@ class IndexController extends AbstractActionController{
         return $myArray;
     }
 
-    public function bindUser($id){
+    public function bindUser(){
 //die( __METHOD__." is reached; test echo in line ".__LINE__);
         $userTable = $this->getServiceLocator()->get('UsersTable'); // to Users/Module.php :: getServiceConfig()
         $user = $userTable->getUserById($this->params()->fromRoute('id'));

@@ -25,13 +25,25 @@ class RegistrationController extends AbstractActionController{
 
 
     public function processAction(){
+
         if (! $this->request->isPost()) {
-            return $this->redirect()->toRoute(NULL ,
-                array( 'controller' => 'Register',
-                    'action' => 'index'
+            return $this->redirect()->toRoute(NULL , array(
+                'controller' => 'Register',
+                'action' => 'index'
                 ));
         }
+
         $post = $this->getRequest()->getPost();
+
+        $ip = $this->getRequest()->getServer('REMOTE_ADDR');
+        $result = $this->getServiceLocator()->get('UsersTable')->compareIp($ip);
+//die(is_object($result));
+        if(is_object($result)){
+            $this->flashMessenger()
+                ->setNamespace('ip_exist')
+                ->addMessage('your IP is already registered.');
+            return $this->redirect()->toRoute('users/login');
+        }
 //die(var_dump($post));
         $form = $this->getServiceLocator()->get('RegisterForm');
         //$form = new RegisterForm();
@@ -57,6 +69,8 @@ class RegistrationController extends AbstractActionController{
     }
 
     protected function createUser(array $data){
+        $data['user_ip'] = $this->getRequest()->getServer('REMOTE_ADDR');
+
         $sm = $this->getServiceLocator();
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
         $resultSetPrototype = new ResultSet();
@@ -66,7 +80,6 @@ class RegistrationController extends AbstractActionController{
         $user = new Users();
         $user->exchangeArray($data);
         $userTable = $this->getServiceLocator()->get('UsersTable');
-        //$userTable = new UserTable($tableGateway);
         $userTable->saveUser($user);
         return true;
     }

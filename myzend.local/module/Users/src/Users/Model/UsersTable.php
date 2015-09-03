@@ -27,9 +27,15 @@ class UsersTable{
         return $row;
     }
 
+    public function compareIp($ip){
+        $rowset = $this->tableGateway->select(array('user_ip' => $ip));
+        $row = $rowset->current();
+        return $row;
+    }
+
     public function getUserByEmail($userEmail){
         if(! $userEmail){
-            throw new \Exception("email don't pass.");
+            throw new \Exception("email don't pass in ".__METHOD__);
         }
         $rowset = $this->tableGateway->select(array('user_email' => $userEmail));
         $row = $rowset->current();
@@ -40,8 +46,10 @@ class UsersTable{
     }
 
     public function saveUser(Users $fromController){
+
         $data = array(
             'user_name' => $fromController->user_name,
+            'user_ip' =>  $fromController->user_ip,
             'user_email' => $fromController->user_email,
             'user_password' => $fromController->user_password,
             'user_role'=> $fromController->user_role

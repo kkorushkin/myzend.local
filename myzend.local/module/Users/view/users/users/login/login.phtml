@@ -9,7 +9,9 @@ $flash = $this->flashMessenger();
 </head>
 <body>
     <section class="login">
-    <h2>Login</h2><?php echo $flash->render('NotLogin');?>
+    <h2>Login</h2>
+<?php echo $flash->render('NotLogin');?>
+<?php echo $flash->render('ip_exist');?>
         <?php  ;?>
 <?php if ($this->error): ?>
         <p class="error">
@@ -25,11 +27,12 @@ $flash = $this->flashMessenger();
         'action' => 'process'
     )));
     echo $this->form()->openTag($form);
-    echo $this->formRow($form->get('user_email'));
-    echo $this->formRow($form->get('user_password'));
+    echo $this->formRow($form->get('user_email')).'<br />';
+    echo $this->formRow($form->get('user_password')).'<br />';
     echo $this->formRow($form->get('login')->setAttribute('class','btn btn-success pull'));
     echo $this->form()->closeTag($form);
 ?>
+        <a><strike>forgot your login / password?</strike></a>
     </section>
 </body>
 </html>

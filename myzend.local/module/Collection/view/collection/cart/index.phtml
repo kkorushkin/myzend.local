@@ -20,7 +20,7 @@ echo $this->headScript()->prependFile($this->basePath('js/cart.js'));
                 <div class="cart-item-price">$&nbsp;<?=$item->item_price;?>&nbsp;</div>
                 <div id="cart-item-del-<?=$item->item_id;?>" class="cart-item-del" data-num="<?=$item->item_id;?>"></div>
             </div>
-            <div class="cart-item-img" style="background-image: url(<?=Collection\Model\Collection::COLL_IMG_PATH.$item->img_link;?>);"></div>
+            <div class="cart-item-img" style="background-image: url('<?=Collection\Model\Collection::COLL_IMG_PATH.$item->img_link;?>');"></div>
             <div class="cart-item-quantity-wrapper">
                 <input type="text" class="cart-item-quantity" value="<?=$item->item_quantity;?>" />
             </div>

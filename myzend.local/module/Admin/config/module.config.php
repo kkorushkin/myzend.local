@@ -8,6 +8,7 @@ return array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
             'Admin\Controller\AdminUserManager' => 'Admin\Controller\AdminUserManagerController',
             'Admin\Controller\AdminCollectionManager' => 'Admin\Controller\AdminCollectionManagerController',
+            'Admin\Controller\AdminOrdersManager' => 'Admin\Controller\AdminOrdersManagerController',
         ),
     ),
 /*
@@ -88,6 +89,21 @@ return array(
                     'defaults' => array(
                         '__NAMESPACE__' => 'Admin\Controller',
                         'controller'    => 'AdminCollectionManager',
+                        'action'        => 'index',
+                        'constraints' => array(
+                            'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            'id'      => '[0-9]'
+                        ),
+                    ),
+                ),
+            ),
+            'orders-manager' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/admin/orders-manager[/:action[/:id]]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Admin\Controller',
+                        'controller'    => 'AdminOrdersManager',
                         'action'        => 'index',
                         'constraints' => array(
                             'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
