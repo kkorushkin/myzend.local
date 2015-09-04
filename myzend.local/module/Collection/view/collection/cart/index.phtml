@@ -3,9 +3,7 @@ echo $this->headLink()->prependStylesheet($this->basePath('css/cart.css'));
 echo $this->headScript()->prependFile($this->basePath('js/cart.js'));
 ?>
     <!-- Close btn for cart view -->
-    <!--<div id="cart-close-k"></div>-->
-    <!-- ECHO AUTH OPTIONS VIA HELPER (Application->src->Application->Helper->AppLayerViewHelperAuth) -->
-    <div id="who_is-in" class="dark"><?php echo $this->appAuth();?></div>
+    <div id="cart-close-k"></div>
     <hr>
     <table>
         <tr>
@@ -17,10 +15,10 @@ echo $this->headScript()->prependFile($this->basePath('js/cart.js'));
 ?>
         <div id="cart-item-wrapper-<?=$item->item_id;?>" class="cart-item-wrapper" data-num="<?=$item->item_id;?>">
             <div class="cart-item-price-del">
-                <div class="cart-item-price">$&nbsp;<?=$item->item_price;?>&nbsp;</div>
+                <div class="cart-item-price"><?=$item->item_price;?>&nbsp;$</div>
                 <div id="cart-item-del-<?=$item->item_id;?>" class="cart-item-del" data-num="<?=$item->item_id;?>"></div>
             </div>
-            <div class="cart-item-img" style="background-image: url('<?=Collection\Model\Collection::COLL_IMG_PATH.$item->img_link;?>');"></div>
+            <div class="cart-item-img" style="background-image: url(<?=Collection\Model\Collection::COLL_IMG_PATH.$item->img_link;?>);"></div>
             <div class="cart-item-quantity-wrapper">
                 <input type="text" class="cart-item-quantity" value="<?=$item->item_quantity;?>" />
             </div>
@@ -35,11 +33,10 @@ echo $this->headScript()->prependFile($this->basePath('js/cart.js'));
 }
 ?>
     <hr>
-    <div id="cart total-quantity" class="cart-informer"><span><?=$this->count;?>&nbsp;products</span></div>
+    <div id="cart-total-price" class="cart-informer"><span><?=(int)$total_price;?>&nbsp;$ total</span></div>
     <a href="/order">
         <button id="cart-checkout-btn" type="submit" class="btn btn-info btn-lg" <?=$this->disable_checkout;?>> checkout </button>
     </a>
-    <div id="cart-total-price" class="cart-informer"><span>$&nbsp;<?=(int)$total_price;?>&nbsp;total</span></div>
-
+    <div id="cart total-quantity" class="cart-informer"><span><?=$this->count;?>&nbsp;products</span></div>
 <!-- TO CART CONFIRM DIAOG -->
 <div id="to-cart-confirm-modal-k"></div>

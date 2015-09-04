@@ -4,17 +4,17 @@ namespace Admin;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 
-use Admin\Form\LoginForm,
-    Admin\Form\LoginFormFilter;
-use Admin\Form\UserAddForm,
-    Admin\Form\UserAddFormFilter;
-use Admin\Form\AdminCollectionManagerForm,
-    Admin\Form\AdminCollectionManagerFormFilter;
+use Admin\Form\LoginForm;
+use Admin\Form\LoginFormFilter;
+use Admin\Form\UserAddForm;
+use Admin\Form\UserAddFormFilter;
+use Admin\Form\AdminCollectionManagerForm;
+use Admin\Form\AdminCollectionManagerFormFilter;
 
-use Admin\Model\AdminUsers,
-    Admin\Model\AdminUsersTable;
-use Admin\Model\AdminCollection,
-    Admin\Model\AdminCollectionTable;
+use Admin\Model\AdminUsers;
+use Admin\Model\AdminUsersTable;
+use Admin\Model\AdminCollection;
+use Admin\Model\AdminCollectionTable;
 
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;

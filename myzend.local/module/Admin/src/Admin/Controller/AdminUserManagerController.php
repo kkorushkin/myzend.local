@@ -16,11 +16,11 @@ class AdminUserManagerController extends AbstractActionController{
             $session = new Container('admin');
             $user_email = $session->user_email;
             $userTable = $this->getServiceLocator()->get('AdminUsersTable');
-            $vm = new AdminViewModel(array(
+            $viewModel = new AdminViewModel(array(
                 'users' => $userTable->fetchAll(),
                 'user_email' => $user_email,
             ));
-            return $vm->setTerminal(true);
+            return $viewModel;
         }else{
             return $this->redirect()->toRoute('admin', array(
                 'controller' => 'Auth',
@@ -36,30 +36,35 @@ class AdminUserManagerController extends AbstractActionController{
             return true;
         }else{
             return false;
-        }
+        } ;
     }
 
     public function editAction(){
+        // echo __METHOD__." is reached; test echo in line ".__LINE__;
         $userTable = $this->getServiceLocator()->get('AdminUsersTable'); // to Users/Module.php :: getServiceConfig()
         $user = $userTable->getUserById($this->params()->fromRoute('id'));
         $form = $this->getServiceLocator()->get('UserEditForm');
         $form->setHydrator(new \Zend\Stdlib\Hydrator\ObjectProperty()); // !!!
         $form->bind($user);
-        $vm = new AdminViewModel(array(
+        $viewModel = new AdminViewModel(array(
             'form'    => $form,
             'user_id' => $this->params()->fromRoute('id')
         ));
-        return $vm->setTerminal(true);
+        return $viewModel;
     }
-/*processAction(). Действие processAction применяется при отправке
+/*
+ * processAction(). Действие processAction применяется при отправке
 пользовательской формы edit; processAction сохраняет обновленную запись
 и возвращает управление методу indexAction.
  */
     public function processAction(){
+// Получение идентификатора пользователя из POST
         $post = $this->request->getPost(); // $post got POST from edit.phtml
-        $userTable = $this->getServiceLocator()->get('AdminUsersTable');
+//die(print_r($post));
+        $userTable = $this->getServiceLocator()->get('AdminUsersTable'); // $userTable got AdminUsersTable() from Module::getServiceConfig()
 // Загрузка сущности Users
-        $user = $userTable->getUserById($post->user_id);
+        $user = $userTable->getUserById($post->user_id);// $user got $row from AdminUsersTable()::getUser($id)
+//die(print_r($user));
 // Привязка сущности Users к Form {commented}
         $form = $this->getServiceLocator()->get('UserEditForm');
         //$form->setHydrator(new \Zend\Stdlib\Hydrator\ObjectProperty()); // !!!
@@ -80,10 +85,10 @@ class AdminUserManagerController extends AbstractActionController{
         //$viewModel = new ViewModel(array('form'=>$form));
         //echo __METHOD__." is reached; test echo in line ".__LINE__;
         $form = $this->getServiceLocator()->get('UserAddForm');
-        $vm = new AdminViewModel(array(
+        $viewModel = new AdminViewModel(array(
             'form' => $form
         ));
-        return $vm->setTerminal(true);
+        return $viewModel;
     }
 
     public function  processAddAction(){
@@ -95,18 +100,18 @@ class AdminUserManagerController extends AbstractActionController{
         }
         $post = $this->request->getPost();
         $form = $this->getServiceLocator()->get('UserAddForm');
-//die(var_dump($post->user_email));
+        print($post->user_mail);
         //$form = new UserAddForm();
         //$inputFilter = new UserAddFormFilter();
         //$form->setInputFilter($inputFilter);
         $form->setData($post);
         if (!$form->isValid()) {
-            $vm = new AdminViewModel(array(
+            $model = new AdminViewModel(array(
                 'error' => true,
                 'form' => $form,
             ));
-            $vm->setTemplate('/admin/admin-user-manager/add');
-            return $vm->setTerminal(true);
+            $model->setTemplate('/admin/user-manager/add');
+            return $model;
         }
 // Создание пользователя
         if($this->createUser($form->getData())){

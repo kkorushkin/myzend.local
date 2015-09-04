@@ -1,4 +1,5 @@
 <?php echo $this->doctype(); ?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -14,31 +15,22 @@
                         ->prependStylesheet($this->basePath('css/style.css'))
                         ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
                         ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-            ;?>
+        //Kirill
+                        ->prependStylesheet($this->basePath('slider/ItemSlider/css/style.css')) ?>
         <?php echo $this->headScript()
             ->prependFile($this->basePath('js/bootstrap.min.js'))
             ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
             ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
         // Kirill
+       //   ->prependFile($this->basePath('js/jquery-ui.min.js'));
             ->prependFile($this->basePath('js/customk.js'))
-            ->prependFile($this->basePath('js/price-slider/jquery-ui-1.10.3.custom.min.js'))
+            ->prependFile($this->basePath('slider/ItemSlider/js/jquery.catslider.js'))
+            ->prependFile($this->basePath('slider/ItemSlider/js/modernizr.custom.63321.js'))
         // Kirill
             ->prependFile($this->basePath('js/jquery-2.1.4.min.js'))
         ;?>
 
     </head>
-    <div id="check-js">
-        <h3 align="right">WARNING</h3><br />Java Script is diabled in this browser.<br />Many of site functions couldn't work correctly.<br />
-        <div align="right">
-            <a>[ help ]</a>
-            <a> [ continue ]</a>
-        </div>
-    </div>
-    <script>
-        $(document).ready(function(){
-            $('#check-js').css('display','none');
-        });
-    </script>
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
@@ -57,8 +49,7 @@
                         <!--<li class="active"><a href="<?php echo $this->url('home') ?>"><?php //echo $this->translate('Home') ?></a></li>-->
                         <li class="my-active"><a href="<?php echo $this->url('users') ?>"><?php echo $this->translate('join') ?></a></li>
                         <li class="my-active"><a href="<?php echo $this->url('collection') ?>"><?php echo $this->translate('Collection') ?></a></li>
-                        <!-- ECHO AUTH OPTIONS VIA HELPER (Application->src->Application->Helper->AppLayerViewHelperAuth) -->
-                        <div id="who_is-in"><?php echo $this->appAuth();?></div>
+                        <li class="my-active"><?php echo $this->identity()->user_email;?></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

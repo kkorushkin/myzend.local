@@ -1,89 +1,24 @@
-<?php if($this->identity()->user_role != 'admin'){
+<?php
+if($this->identity()->user_role != 'admin'){
     header("Location: /admin");
-    exit();?>
+    exit();
+?>
     <a href="<?php echo $this->url('admin', array(
         'controller' => 'Auth', 'action' => 'logoutMe'));?>"> [ to login ]</a><br />
-<?php die();}?>
-<?php echo $this->doctype(); ?>
-<?php ;?>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <?php echo $this->headTitle('adminka')?>
-    <?php echo $this->headMeta()
-        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-    ?>
-
-    <!-- Le styles -->
-    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-        ->prependStylesheet($this->basePath('css/style.css'))
-        ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-    ;?>
-    <?php echo $this->headScript()
-        ->prependFile($this->basePath('js/bootstrap.min.js'))
-        ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-        ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
-        // Kirill
-        ->prependFile($this->basePath('js/customk.js'))
-        ->prependFile($this->basePath('js/price-slider/jquery-ui-1.10.3.custom.min.js'))
-        // Kirill
-        ->prependFile($this->basePath('js/jquery-2.1.4.min.js'))
-    ;?>
-</head>
-<div id="check-js">
-    <h3 align="right">WARNING</h3><br />Java Script is diabled in this browser.<br />Many of site functions couldn't work correctly.<br />
-    <div align="right">
-        <a>[ help ]</a>
-        <a> [ continue ]</a>
-    </div>
-</div>
-<script>
-    $(document).ready(function(){
-        $('#check-js').css('display','none');
-    });
-</script>
-<body>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/admin/index">
-                <img src="<?php echo $this->basePath('img/zf2-my-logo-2.png') ?>" alt="Zend Framework 2"/>&nbsp;Administrator<?php //echo $this->translate('Skeleton Application') ?>
-            </a>
-        </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <!--<li class="active"><a href="<?php echo $this->url('home') ?>"><?php //echo $this->translate('Home') ?></a></li>-->
-                <li class="my-active"><a><?php echo $this->identity()->user_email;?></a></li>
-                <li class="my-active"><a href="<?php echo $this->url('admin', array('controller' => 'Auth', 'action' => 'logoutMe'));?>">[ logout ]</a></li>
-                <li class="my-active"><a href="<?php echo $this->url('collection') ?>">Site</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
-<div class="container">
+<?php
+    die();
+}
+echo $this->headTitle('Adminka');
+?>
+    <span class=""><?php echo $this->identity()->user_email;?></span>
+    <a href="<?php echo $this->url('admin', array(
+        'controller' => 'Auth', 'action' => 'logoutMe'));?>"> [ logout ]</a><br />
     <a class="admin-menu-link" href="<?php echo $this->url('index', array(
         'controller'=>'Index', 'action'=>'index'));?>">[ main ]</a>
-    <a class="admin-menu-link" href="<?php echo $this->url('collection-manager', array());?>">[ collection ]</a>
-    <a class="admin-menu-link" href="<?=$this->url('orders-manager', array());?>">[ orders ]</a>
-    <a class="admin-menu-link" href="<?php echo $this->url('user-manager', array());?>">[ users ]</a>
-    <!--
-    <a class="admin-menu-link" href="">[ site background image ]</a>
-    -->
+    <a class="admin-menu-link" href="<?php echo $this->url('collection-manager', array(
+        'controller'=>'CollectionManager', 'action'=>'index'));?>">[ collection ]</a>
+    <a class="admin-menu-link" href="">[ orders ]</a>
+    <a class="admin-menu-link" href="<?php echo $this->url('user-manager', array(
+        'controller'=>'Index', 'action' => 'index'));?>">[ users ]</a>
     <hr/>
-    <?php echo $this->content; ?>
-    <hr>
-    <footer>
-        <p>&copy; 2005 - <?php echo date('Y') ?> YO. <?php echo $this->translate('All rights reserved.') ?></p>
-    </footer>
-
-</div> <!-- /container -->
-<?php echo $this->inlineScript() ?>
-</body>
-</html>
+<div class="content"><?php echo $this->content; ?></div>

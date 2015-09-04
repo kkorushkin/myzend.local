@@ -7,9 +7,10 @@ use Zend\Form\Form;
 class RegisterForm extends Form{
 
     public function __construct($name = null){
-        parent::__construct('Registration');
+        parent::__construct('Register');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype','multipart/form-data');
+
         $this->add(array(
             'name'       => 'user_name',
             'attributes' => array(
@@ -20,6 +21,7 @@ class RegisterForm extends Form{
                 'label'  => 'Name',
             ),
         ));
+        // <input type="text" name="name" label="Full Name" />
         $this->add(array(
             'name'       => 'user_email',
             'attributes' => array(
@@ -42,6 +44,7 @@ class RegisterForm extends Form{
                 )
             )
         ));
+        // <input type="email" name="email" label="Email" />
         $this->add(array(
             'name'       => 'user_password',
             'attributes' => array(
@@ -52,6 +55,7 @@ class RegisterForm extends Form{
                 'label'  => 'Password',
             ),
         ));
+        // <input type="password" name="password" label="Password" />
         $this->add(array(
             'name'       => 'confirm_password',
             'attributes' => array(
@@ -62,6 +66,7 @@ class RegisterForm extends Form{
                 'label'  => 'Confirm Password',
             ),
         ));
+        // <input type="password" name="confirm_password" label="Confirm Password" />
         $this->add(array(
             'name'       => 'user_role',
             'attributes' => array(
@@ -69,7 +74,6 @@ class RegisterForm extends Form{
                 'value'  => 'user'
             ),
         ));
-
         $this->add(array(
             'name'       => 'submit',
             'attributes' => array(
@@ -77,6 +81,7 @@ class RegisterForm extends Form{
             'value'      => 'Register',
             ),
         ));
+        // <input type="submit" name="submit" value="Register" />
     }
 
 }

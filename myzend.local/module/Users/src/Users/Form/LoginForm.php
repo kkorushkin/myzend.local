@@ -17,7 +17,7 @@ class LoginForm extends Form{
                 'type'   => 'email',
                 'required' => true,
             ),
-            'options'   => array(
+            'options'    => array(
                 'label' => 'Email',
             ),
             'filters'    => array(

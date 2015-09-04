@@ -1,10 +1,7 @@
-<h1>Users management</h1>
 <a class="" href="<?php echo $this->url('user-manager',array(
     'action' => 'add'));?>">[ add new user ]</a>
-<!--
 <a class="" href="<?php echo $this->url('user-manager',array(
     'action' => 'add'));?>">[ mass mailing ]</a>
--->
 <tr>
 <hr>
 <table class="table" id="tableUsers">
@@ -24,12 +21,8 @@
                 array('action'=>'edit', 'id' => $item->user_id));?>">Edit</a></td>
         <td id="delete-show-modal" class="actionBtn"><a class="btn btn-success pull-left" href="<?php echo $this->url('user-manager',
                 array('action'=>'delete', 'id' => $item->user_id));?>">Delete</a></td>
-        <td id="delete-show-modal" class="actionBtn">
-            <!--
-            <a class="btn btn-success pull-left" href="<?php //echo $this->url('',
-                //array('action'=>'', 'id' => $item->user_id));?>">Mail</a>
-            -->
-        </td>
+        <td id="delete-show-modal" class="actionBtn"><a class="btn btn-success pull-left" href="<?php //echo $this->url('',
+                //array('action'=>'', 'id' => $item->user_id));?>">Mail</a></td>
     </tr>
 <?php endforeach; ?>
 </table>

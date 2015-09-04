@@ -4,13 +4,13 @@ $this->headTitle($title);
 ?>
     <h1><?php echo $this->escapeHtml($title); ?></h1>
 <?php
-$form = $this->form;
-$form->prepare();
+$form = $this->addFormView;
 $form->setAttribute('action', $this->url(null, array(
     'controller'=>'AdminCollectionManager',
     'action' => 'add'
 )));
 $form->setAttribute('method', 'post');
+$form->prepare();
 echo $this->form()->openTag($form);
 //die(var_dump($this->brands));
 ?>
@@ -22,107 +22,44 @@ echo $this->form()->openTag($form);
 <?php endif ?>
 <table>
     <tr>
-        <td id="left-side-table">
-            <table>
-                <tr>
-                    <td><?php echo $this->formElement($form->get('item_id'));?></td>
-                </tr>
-                <tr>
-                    <td><?php echo $this->formLabel($form->get('item_name'));?></td>
-                    <td><?php echo $this->formElement($form->get('item_name'));?></td>
-                    <td><?php echo $this->formElementErrors($form->get('item_name'));?></td>
-                </tr>
-                <tr>
-                    <td><?php echo $this->formLabel($form->get('item_brand'));?></td>
-                    <td><?php echo $this->formElement($form->get('item_brand')->setAttribute('options', ($this->brands))) ;?></td>
-                    <td><?php echo $this->formElementErrors($form->get('item_brand'));?></td>
-                </tr>
-                <tr>
-                    <td><?php echo $this->formLabel($form->get('item_description'));?></td>
-                    <td><?php echo $this->formElement($form->get('item_description'));?></td>
-                    <td><?php echo $this->formElementErrors($form->get('item_description'));?></td>
-
-                </tr>
-                <tr>
-                    <td><?php echo $this->formLabel($form->get('item_price'));?></td>
-                    <td><?php echo $this->formElement($form->get('item_price'));?>
-                        <?php echo $this->formElementErrors($form->get('item_price'));?></td>
-                </tr>
-                <tr>
-                    <td><?php echo $this->formLabel($form->get('item_quantity'));?></td>
-                    <td><?php echo $this->formElement($form->get('item_quantity'));?>
-                        <?php echo $this->formElementErrors($form->get('item_quantity'));?></td>
-                </tr>
-                <tr>
-                    <td><?php echo $this->formLabel($form->get('item_category'));?></td>
-                    <td><?php echo $this->formElement($form->get('item_category')->setAttribute('options', ($this->categories)));?>
-                        <?php echo $this->formElementErrors($form->get('item_category'));?></td>
-                </tr>
-                <tr>
-                    <td><?php echo $this->formLabel($form->get('item_sub_category'));?></td>
-                    <td><?php echo $this->formElement($form->get('item_sub_category')->setAttribute('options', ($this->sub_cats)));?>
-                        <?php echo $this->formElementErrors($form->get('item_sub_category'));?></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <table>
-                            <tr align="center">
-                                <td  class="color-filters-2"  data-color="white"><input type="checkbox" name="color" value="white" /></td>
-                                <td  class="color-filters-2"  data-color="black"><input type="checkbox" name="color" value="black" /></td>
-                                <td  class="color-filters-2"  data-color="red"><input type="checkbox" name="color" value="red" /></td>
-                                <td  class="color-filters-2"  data-color="blue"><input type="checkbox" name="color" value="blue" /></td>
-                                <td  class="color-filters-2"  data-color="green"><input type="checkbox" name="color" value="green" /></td>
-                                <td  class="color-filters-2"  data-color="colored"><input type="checkbox" name="color" value="colored" /></td>
-                                <td  class="color-filters-2"  data-color="gray"><input type="checkbox" name="color" value="gray" /></td>
-                                <td  class="color-filters-2"  data-color="brown"><input type="checkbox" name="color" value="brown" /></td>
-                                <td  class="color-filters-2"  data-color="orange"><input type="checkbox" name="color" value="orange" /></td>
-                                <td  class="color-filters-2"  data-color="lightblue"><input type="checkbox" name="color" value="lightblue" /></td>
-                                <td  class="color-filters-2"  data-color="yellow"><input type="checkbox" name="color" value="yellow" /></td>
-                                <td  class="color-filters-2"  data-color="pink"><input type="checkbox" name="color" value="pink" /></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-
-        </td>
-        <td id="right-side-table">
-            <table>
-                <tr>
-                    <td>
-                    <fieldset>
-                        <legend>Item images collection (optionally)</legend>
-                        view 1 (main - mast be)
-                        <?php echo $this->formElement($form->get('img'));?>
-                        <?php echo $this->formElementErrors($form->get('img'));?>
-                        view 2
-                        <?php echo $this->formElement($form->get('img'));?>
-                        <?php echo $this->formElementErrors($form->get('img'));?>
-                        view 3
-                        <?php echo $this->formElement($form->get('img'));?>
-                        <?php echo $this->formElementErrors($form->get('img'));?>
-                        view 4
-                        <?php echo $this->formElement($form->get('img'));?>
-                        <?php echo $this->formElementErrors($form->get('img'));?>
-                        view 5
-                        <?php echo $this->formElement($form->get('img'));?>
-                        <?php echo $this->formElementErrors($form->get('img'));?>
-                        view 6
-                        <?php echo $this->formElement($form->get('img'));?>
-                        <?php echo $this->formElementErrors($form->get('img'));?>
-                    </fieldset>
-                    </td>
-                </tr>
-            </table>
-        </td>
+        <td><?php echo $this->formElement($form->get('item_id'));?></td>
     </tr>
     <tr>
-        <td>
+        <td><?php echo $this->formLabel($form->get('item_name'));?></td>
+        <td><?php echo $this->formElement($form->get('item_name'));?></td>
+        <td><?php echo $this->formElementErrors($form->get('item_name'));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_brand'));?></td>
+        <td><?php echo $this->formElement($form->get('item_brand')->setAttribute('options', ($this->brands))) ;?></td>
+
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_description'));?></td>
+        <td><?php echo $this->formElement($form->get('item_description'));?></td>
+
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_price'));?></td>
+        <td><?php echo $this->formElement($form->get('item_price'));?></td>
+        <td><?php echo $this->formElementErrors($form->get('item_price'));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_category'));?></td>
+        <td><?php echo $this->formElement($form->get('item_category')->setAttribute('options', ($this->categories)));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('item_sub_category'));?></td>
+        <td><?php echo $this->formElement($form->get('item_sub_category')->setAttribute('options', ($this->subcats)));?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->formLabel($form->get('img_link'));?></td>
+        <td><?php echo $this->formElement($form->get('img_link'));?></td>
+    </tr>
+    <tr>
         <td colspan="2"><?php echo $this->formElement($form->get('submit')/*->setAttribute('class','btn btn-success pull-right')*/);?></td>
-        </td>
     </tr>
 </table>
-
 <?php
 echo $this->form()->closeTag();
 ?>

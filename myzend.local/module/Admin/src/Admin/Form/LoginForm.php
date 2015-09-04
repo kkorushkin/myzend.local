@@ -53,7 +53,7 @@ class LoginForm extends Form{
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'login',
-                'class' => 'btn'
+                'class' => 'btn btn-primary'
             ),
         ));
         // <input type="submit" name="submit" value="Login" />

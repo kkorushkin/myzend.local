@@ -1,38 +1,58 @@
-<?php echo $this->doctype(); ?>
-<html lang="en">
-<?php $flash = $this->flashMessenger(); ?>
-<html>
-<head>
-    <?php echo $this->headLink()->prependStylesheet($this->basePath('css/bootstrap.min.css'));?>
-</head>
-    <body>
-        <div id="auth-page" class="jumbotron">
-            <div><h1>Hey, are you<br />an administrator?</h1></div>
-            <div>
-                <section class="login">
-                    <?php
-                        $form = $this->form;
-                        $form->prepare();
-                        $form->setAttribute('action', $this->url(NULL, array(
-                            'controller' => 'Auth',
-                            'action' => 'process'
-                        )));
-                        echo $this->form()->openTag($form);
-                        echo $this->formRow($form->get('user_email'));
-                        echo $this->formRow($form->get('user_password'));
-                        echo $this->formRow($form->get('login')).' or <a href="'.$this->url('collection').'">go shop</a>';
-                        echo $this->form()->closeTag($form);
-                    ?>
-                </section>
+<?php
+$flash = $this->flashMessenger();
+?>
+<div id="auth-page" class="jumbotron">
+<div><h1>Hey, are you<br />an administrator?</h1></div>
+<div>
+    <section class="login">
+    <?php
+        $form = $this->form;
+        $form->prepare();
+        $form->setAttribute('action', $this->url(NULL, array(
+            'controller' => 'Auth',
+            'action' => 'process'
+        )));
+        //$form->setAttribute('method', 'post'); // added in LoginForm
+        echo $this->form()->openTag($form);
+    ?>
+    <table class="zend_form">
+        <tr>
+            <td>
+                <?php echo $this->formLabel($form->get('user_email')); ?>:
+            </td>
+            <td>
+                <?php echo $this->formLabel($form->get('user_password'));?>:
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <?php
-                echo $flash->render('not_admin', array(
-                    'alert', 'alert-dismissable', 'alert-danger'
-                ));
+                    echo $this->formElement($form->get('user_email'));
+                    echo $this->formElementErrors($form->get('user_email'));
                 ?>
-            </div>
-        </div>
-        <div class="jumbotron">
-        </div>
-    </body>
-</html>
-
+            </td>
+            <td>
+                <?php
+                    echo $this->formElement($form->get('user_password'));
+                    echo $this->formElementErrors($form->get('user_password'));
+                ?>
+            </td>
+            <td colspan="2">
+                <?php
+                echo $this->formElement($form->get('login'));//->setAttribute('class','class="btn btn-success btn-lg"'));
+                echo $this->formElementErrors($form->get('login'));
+                ?>
+            </td>
+        </tr>
+    </table>
+    <?php echo $this->form()->closeTag($form);?>
+    </section>
+<?php
+    echo $flash->render('not_admin', array(
+        'alert', 'alert-dismissable', 'alert-danger'
+    ));
+?>
+</div>
+</div>
+<div class="jumbotron">
+</div>

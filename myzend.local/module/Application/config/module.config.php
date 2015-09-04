@@ -99,11 +99,4 @@ return array(
             ),
         ),
     ),
-    // custom helpers
-    'view_helpers' => array(
-        'invokables' => array(
-            'appAuth' => 'Application\Helper\AppLayoutViewHelperAuth',
-        )
-    )
-    //
 );

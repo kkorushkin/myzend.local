@@ -25,7 +25,7 @@ class LoginController extends AbstractActionController{
                     'action' => 'login'
                 ));
         }
-        $post = $this->getRequest()->getPost();
+        $post = $this->request->getPost();
         $form = $this->getServiceLocator()->get('LoginForm');
         //$form = new LoginForm();
         //$inputFilter = new LoginFormFilter();
@@ -39,16 +39,12 @@ class LoginController extends AbstractActionController{
             $model->setTemplate('users/login/login');
             return $model;
         }
-
-        $this->getAuthService()->getAdapter()
-            ->setIdentity($this->getRequest()->getPost('user_email'))
-            ->setCredential($this->getRequest()->getPost('user_password'));
-//die($this->getAuthService()->getAdapter()->getIdentity().'<br />'.$this->getAuthService()->getAdapter()->getCredential());
+        $this->getAuthService()->getAdapter()->setIdentity(
+            $this->request->getPost('user_email'))->setCredential(
+                $this->request->getPost('user_password')
+            );
         $result = $this->getAuthService()->authenticate();
-//die(print_r($post));
         if ($result->isValid()) {
-
-
             $this->getAuthService()->getStorage()->write(
                 $this->request->getPost('user_email'));
             return $this->redirect()->toRoute(NULL , array(
@@ -78,7 +74,7 @@ class LoginController extends AbstractActionController{
             $dbAdapter = $this->getServiceLocator()->get(
                 'Zend\Db\Adapter\Adapter');
             $dbTableAuthAdapter = new DbTableAuthAdapter(
-                $dbAdapter,'users','user_email','user_password', 'MD5(?)');
+                $dbAdapter,'user','user_email','user_password', 'MD5(?)');
             $authService = new AuthenticationService();
             $authService->setAdapter($dbTableAuthAdapter);
             $this->authservice = $authService;
@@ -87,11 +83,9 @@ class LoginController extends AbstractActionController{
     }
 
     public function confirmAction(){
-        //$ref = $this->getRequest()->getHeader("referer");
         $user_email = $this->getAuthService()->getStorage()->read();
         $viewModel = new ViewModel(array(
-            'user_email' => $user_email,
-            //'ref' => $ref,
+            'user_email' => $user_email
         ));
         return $viewModel;
     }

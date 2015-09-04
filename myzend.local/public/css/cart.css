@@ -13,12 +13,6 @@
     border-radius: 5px;
     box-shadow: -2px 4px 5px 0px rgba(0,0,0,0.75);
 }
-#cart-view-modal-k > .dark{
-    color: #0D4762;
-}
-#cart-view-modal-k > .dark > a{
-    color: #0073ea;
-}
 #cart-wrapper-k{
     background-color: #c7ddef;
     /*filter: blur(5px);

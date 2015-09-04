@@ -22,20 +22,6 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(),
-                        ),
-                    ),
-                ),
             ),
             'cart' => array(
                 'type'    => 'Segment',
@@ -70,7 +56,6 @@ return array(
             'collectionSearchForm' => 'Collection\Helper\CollectionLayoutViewHelperSearchFrom',
             'collectionCartIndicator' => 'Collection\Helper\CollectionLayoutViewHelperCartIndicator',
             'collectionItemCount' => 'Collection\Helper\CollectionViewHelperItemCount',
-            'collectionAuth' => 'Collection\Helper\CollectionViewHelperAuth',
         )
     )
     //

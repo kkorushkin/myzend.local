@@ -16,15 +16,12 @@ class Collection implements InputFilterAwareInterface{
     public $item_price;
     public $item_category;
     public $item_sub_category;
-
     public $b_name;
     public $cat_id;
     public $cat_name;
     public $subcat_name;
     public $item_quantity;
     public $img_link;
-
-    public $color_id;
 
     const COLL_IMG_PATH = '/img/CollectionImages/';
 
@@ -46,8 +43,7 @@ class Collection implements InputFilterAwareInterface{
         $this->cat_id = (isset($data['cat_id'])) ? $data['cat_id'] : null;
         $this->cat_name = (isset($data['cat_name'])) ? $data['cat_name'] : null;
         $this->subcat_name = (isset($data['subcat_name'])) ? $data['subcat_name'] : null;
-        //
-        $this->color_id = (isset($data['color_id'])) ? $data['color_id'] : null;
+
 
     }
 

@@ -6,8 +6,6 @@ class Users{
 
     public $user_id;
     public $user_name;
-    public $user_ip;
-    public $user_address;
     public $user_email;
     public $user_password;
     public $user_role;
@@ -16,8 +14,6 @@ class Users{
         //echo __METHOD__." is reached; test echo in line ".__LINE__;
         $this->user_id = (isset($data['user_id'])) ? $data['user_id'] : null;
         $this->user_name = (isset($data['user_name'])) ? $data['user_name'] : null;
-        $this->user_ip = (isset($data['user_ip'])) ? $data['user_ip'] : null;
-        $this->user_address = (isset($data['user_address'])) ? $data['user_address'] : null;
         $this->user_email = (isset($data['user_email'])) ? $data['user_email'] : null;
         if(isset($data['user_password'])){
             $this->setPassword($data['user_password']);

@@ -13,8 +13,8 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
-use Users\Model\Users;
-use Users\Model\UsersTable;
+use Users\Model\User;
+use Users\Model\UserTable;
 
 use Users\Form\LoginForm;
 use Users\Form\RegisterForm;

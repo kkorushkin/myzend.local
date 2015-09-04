@@ -1,8 +1,4 @@
 <?php
-    $flash = $this->flashMessenger();
-    echo $flash->render('order_not_allowed', array(
-        'alert', 'alert-dismissable', 'alert-danger'
-    ));
 $title = 'My store.';
 $this->headTitle($title);
 echo $this->headLink()->prependStylesheet($this->basePath('css/cart.css'));

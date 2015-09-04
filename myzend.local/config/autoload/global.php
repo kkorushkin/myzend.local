@@ -1,4 +1,5 @@
 <?php
+
 return array(
     'db' => array(
         'driver'         => 'Pdo',
@@ -8,7 +9,7 @@ return array(
         ),
     ),
     'service_manager' => array(
-        'invokables' => array( // TODO: This was add custom to make $this->identity() work on all views
+        'invokables' => array( // TODO: This was add customed to make $this->identity() work on all views
             'Zend\Authentication\AuthenticationService' => 'Zend\Authentication\AuthenticationService',
         ),
         'factories' => array(
@@ -17,5 +18,4 @@ return array(
     ),
     //
     'satl' => '123xcv098poi765rfv',
-    'root_path' => __DIR__
 );

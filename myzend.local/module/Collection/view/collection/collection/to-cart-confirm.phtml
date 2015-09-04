@@ -1,29 +1,28 @@
 <?php //die(var_dump($details));?>
-    <div id="to-cart-confirm-wrapper">
-        <div><img src="<?=$this->is_in_cart; ?>"/></div>
-        <h2><?=$details->item_name; ?></h2>
-        <table id="to-cart-confirm-table">
-            <tr>
-                <td>qty</td>
-                <td>&nbsp;:&nbsp;</td>
-                <td colspan="2">
-                    <input type="hidden" id="to-cart-confirm-item_id" value="<?=$details->item_id; ?>">
-                    <h4><span class="math-sign">-</span>
-                        <input type="text" id="to-cart-confirm-item_quantity" class="" name="quantity" value="1" size="1"/>
-                        <span class="math-sign">+</span>
-                    </h4>
-                </td>
-            </tr>
-            <tr>
-                <td>price</td>
-                <td>&nbsp;:&nbsp;</td>
-                <td id="to-cart-confirm-item_price" data-num="<?=$details->item_price; ?>">
-                    &nbsp;$&nbsp;<?=$details->item_price; ?></td>
-            </tr>
-        </table>
-        <hr>
-        <div>
-            <input type="submit" id="to-cart-confirm-btn" class="btn btn-default" value="to-cart"/>
-            <input type="submit" id="to-cart-cancel-btn" class="btn btn-default" value="cancel"/>
-        </div>
+<div id="to-cart-confirm-wrapper">
+    <div><img src="<?=$this->is_in_cart;?>" /></div>
+    <h2><?=$details['item_name'];?></h2>
+    <table id="to-cart-confirm-table">
+        <tr>
+            <td>qty</td>
+            <td>&nbsp;:&nbsp;</td>
+            <td colspan="2">
+                <input type="hidden" id="to-cart-confirm-item_id" value="<?=$details['item_id'];?>">
+                <h4><span class="math-sign">-</span>
+                    <input type="text" id="to-cart-confirm-item_quantity" class="" name="quantity" value="1" size="1" />
+                    <span class="math-sign">+</span>
+                </h4>
+            </td>
+        </tr>
+        <tr>
+            <td>price</td>
+            <td>&nbsp;:&nbsp;</td>
+            <td id="to-cart-confirm-item_price" data-num="<?=$details['item_price'];?>"><?=$details['item_price'];?>&nbsp;$</td>
+        </tr>
+    </table>
+    <hr>
+    <div>
+        <input type="submit" id="to-cart-confirm-btn" class="btn btn-default" value="to-cart" />
+        <input type="submit" id="to-cart-cancel-btn" class="btn btn-default" value="cancel" />
     </div>
+</div>

@@ -4,28 +4,22 @@ namespace Admin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Authentication\Result;
 use Admin\Form;
-use Zend\Authentication\AuthenticationService,
-    Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter,
-    Zend\Authentication\Result;
-
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter;
 use Zend\Session\Container;
 
-class AuthController extends AbstractActionController {
+class AuthController extends AbstractActionController{
 
-    protected $auth_service;
+    protected $authservice;
 
     public function authAction(){ // pass LoginForm into auth.phtml (admin/index)
-        if($this->identity()->user_role == 'admin'){
-            return $this->redirect()->toRoute('index', array(
-                'controller' => 'Index',
-                'action' => 'index'));
-        }
         $form = $this->getServiceLocator()->get('LoginForm');
         $viewModel = new ViewModel(array(
             'form' =>$form,
         ));
-        return $viewModel->setTerminal(true);
+        return $viewModel;
     }
 
     public function processAction(){ // here come the data from LoginForm(admin/index)
@@ -36,10 +30,13 @@ class AuthController extends AbstractActionController {
                 ));
         }
         $post = $this->getRequest()->getPost();
+//
         $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
-        //$config = $this->getServiceLocator()->get('Config');
-        //$salt = $config['salt'];
-
+//
+        $config = $this->getServiceLocator()->get('Config');
+//
+        $salt = $config['salt'];
+//
         $authAdapter = new CredentialTreatmentAdapter(
             $dbAdapter,
             'users',
@@ -48,31 +45,37 @@ class AuthController extends AbstractActionController {
             "MD5(?) AND user_role = 'admin'"
             //"MD5(CONCAT('$salt', ?, user_password)) AND user_role = 'admin'"
         );
-
+//
         $authAdapter
             ->setIdentity($post->user_email)
             ->setCredential($post->user_password)
         ;
-
+//
         $auth = new AuthenticationService();
         $result = $auth->authenticate($authAdapter);
-
+//
         switch ($result->getCode()):
             case Result::FAILURE_IDENTITY_NOT_FOUND:
+                //
                 $this->flashMessenger()
                     ->setNamespace('not_admin')
                     ->addMessage('wrong email/pasword');
+                //
                 return $this->redirect()->toRoute(NULL, array(
                     'controller' => 'Auth', 'action' => 'auth'
                 ));
+                //
                 break;
             case Result::FAILURE_CREDENTIAL_INVALID:
+                //
                 $this->flashMessenger()
                     ->setNamespace('not_admin')
                     ->addMessage('admin-only allowed');
+                //
                 return $this->redirect()->toRoute(NULL, array(
                     'controller' => 'Auth', 'action' => 'auth'
                 ));
+                //
                 break;
             case Result::SUCCESS:
                 $storage = $auth->getStorage();
@@ -92,6 +95,7 @@ class AuthController extends AbstractActionController {
                 ));
                 break;
             default:
+                //
                 break;
         endswitch;
     }

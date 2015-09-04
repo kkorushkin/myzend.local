@@ -12,8 +12,8 @@ use Zend\Db\TableGateway\TableGateway;
 //db
 use Collection\Model\Collection;
 use Collection\Model\CollectionTable;
-use Collection\Model\Carts;
-use Collection\Model\CartsTable;
+use Collection\Model\Cart;
+use Collection\Model\CartTable;
 //forms
 use Collection\Form\SearchForm;
 use Collection\Form\SearchFormFilter;
@@ -56,18 +56,17 @@ class Module{
                     $resultSetPrototype->setArrayObjectPrototype(new Collection());
                     return new TableGateway('items', $dbAdapter, null, $resultSetPrototype);
                 },
-                'CartsTable' => function ($sm) {
-                    $tableGateway = $sm->get('CartsTableGateway');
-                    $table = new CartsTable($tableGateway);
+                'CartTable' => function ($sm) {
+                    $tableGateway = $sm->get('CartTableGateway');
+                    $table = new CartTable($tableGateway);
                     return $table;
                 },
-                'CartsTableGateway' => function ($sm) {
+                'CartTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Carts());
-                    return new TableGateway('carts', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new Cart());
+                    return new TableGateway('cart', $dbAdapter, null, $resultSetPrototype);
                 },
-
                 //Forms
                 'SearchForm' => function($sm){
                     $form = new SearchForm();

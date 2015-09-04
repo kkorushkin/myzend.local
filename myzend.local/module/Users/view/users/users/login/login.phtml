@@ -9,30 +9,43 @@ $flash = $this->flashMessenger();
 </head>
 <body>
     <section class="login">
-    <h2>Login</h2>
-<?php echo $flash->render('NotLogin');?>
-<?php echo $flash->render('ip_exist');?>
+    <h2>Login</h2><?php echo $flash->render('NotLogin');?>
         <?php  ;?>
-<?php if ($this->error): ?>
+    <?php if ($this->error): ?>
         <p class="error">
             There were one or more issues with your submission.
             Please correct them as indicated below.
         </p>
-<?php endif ?>
-<?php
+    <?php endif ?>
+    <?php
     $form = $this->form;
     $form->prepare();
     $form->setAttribute('action', $this->url(NULL, array(
         'controller' => 'Login',
         'action' => 'process'
     )));
+    //$form->setAttribute('method', 'post'); // added in LoginForm
     echo $this->form()->openTag($form);
-    echo $this->formRow($form->get('user_email')).'<br />';
-    echo $this->formRow($form->get('user_password')).'<br />';
-    echo $this->formRow($form->get('login')->setAttribute('class','btn btn-success pull'));
-    echo $this->form()->closeTag($form);
-?>
-        <a><strike>forgot your login / password?</strike></a>
+    ?>
+    <dl class="zend_form">
+        <dt><?php echo $this->formLabel($form->get('user_email')); ?>
+        </dt>
+        <dd><?php
+            echo $this->formElement($form->get('user_email'));
+            echo $this->formElementErrors($form->get('user_email'));
+            ?></dd>
+        <dt><?php echo $this->formLabel($form->get('user_password'));
+            ?></dt>
+        <dd><?php
+            echo $this->formElement($form->get('user_password'));
+            echo $this->formElementErrors($form->get('user_password'));
+            ?></dd>
+        <dd ><?php
+            echo $this->formElement($form->get('login')->setAttribute('class','btn btn-success pull'));
+            echo $this->formElementErrors($form->get('login'));
+            ?></dd>
+    </dl>
+    <?php echo $this->form()->closeTag($form);?>
     </section>
 </body>
 </html>

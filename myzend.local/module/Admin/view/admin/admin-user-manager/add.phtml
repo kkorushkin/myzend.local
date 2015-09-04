@@ -10,7 +10,7 @@ $flash = $this->flashMessenger();
 <body>
 <section class="add">
     <h2><a href="<?php echo $this->url('user-manager', array(
-        'controller'=>'index', 'action' => 'index'));?>">
+        'controller'=>'Index', 'action' => 'index'));?>">
         <img src="<?php echo $this->basePath('img/back-img-2.png');?>" />
     </a> |
     Add new user</h2><?php //echo $flash->render('NotAdd') ;?>
@@ -19,14 +19,12 @@ $flash = $this->flashMessenger();
             There were one or more issues with your submission.
             Please correct them as indicated below.
         </p>
-<?php
-    endif
-?>
-<?php
+    <?php endif ?>
+    <?php
     $form = $this->form;
     $form->prepare();
     $form->setAttribute('action', $this->url('user-manager', array(
-        'controller'=>'AdminUserManager',
+        'controller'=>'UserManager',
         'action' => 'processAdd'
     )));
     $form->setAttribute('method', 'post');
@@ -62,7 +60,7 @@ $flash = $this->flashMessenger();
             echo $this->formElementErrors($form->get('add'));
             ?></dd>
     </dl>
-<?php echo $this->form()->closeTag($form);?>
+    <?php echo $this->form()->closeTag($form);?>
 <?php
     echo $flash->render('duplicate', array(
         'alert', 'alert-dismissable', 'alert-danger'

@@ -8,7 +8,6 @@ use Admin\Model\AdminViewModel;
 use Zend\Session\Container;
 use Admin\Model\AdminCollection;
 use Zend\Authentication\AuthenticationService;
-use Zend\File\Transfer\Adapter\Http;
 
 class AdminCollectionManagerController extends AbstractActionController{
 
@@ -17,13 +16,12 @@ class AdminCollectionManagerController extends AbstractActionController{
     public function indexAction(){
         if($this->identifyThis()){
             $session = new Container('admin');
-            //$user_email = $session->user_email;
-            $vm =  new AdminViewModel(array(
+            $user_email = $session->user_email;
+            return new AdminViewModel(array(
                     'collection' => $this->getAdminCollectionTable()->fetchAll(),
-                    //'user_email' => $user_email,
+                    'user_email' => $user_email,
                 )
             );
-            return $vm->setTerminal(true);
         }else{
             return $this->redirect()->toRoute('admin', array(
                 'controller' => 'Auth', 'action' => 'auth'
@@ -31,7 +29,7 @@ class AdminCollectionManagerController extends AbstractActionController{
         }
     }
 
-    protected function identifyThis(){
+    private  function identifyThis(){
         $auth = new AuthenticationService();
 //die($auth->getIdentity()->user_role);
         if($auth->getIdentity()->user_role == 'admin'){
@@ -41,7 +39,7 @@ class AdminCollectionManagerController extends AbstractActionController{
         }
     }
 
-    protected  function getAdminCollectionTable(){
+    public function getAdminCollectionTable(){
         if (! $this->itemsTable) {
             $this->itemsTable = $this->getServiceLocator()->get('AdminCollectionTable');
         }
@@ -49,92 +47,54 @@ class AdminCollectionManagerController extends AbstractActionController{
     }
 // NOTICE:
     public function addFormViewAction(){
-        $form = $this->getServiceLocator()->get('AdminCollectionManagerForm');
         $brands = $this->getBrands();
         $categories = $this->getCategories();
         $sub_cats = $this->getSubCategories();
-//die('<h1>L U C K !</h1>');
-        $vm = new AdminViewModel(array(
-            'form' => $form,
+        $addFormView = $this->getServiceLocator()->get('AdminCollectionManagerForm');
+        return new AdminViewModel(array(
+            'addFormView' => $addFormView,
             'brands' => $brands,
             'categories' => $categories,
-            'sub_cats' => $sub_cats,
+            'subcats' => $sub_cats,
         ));
-        return $vm->setTerminal(true);
     }
-//NOTICE: RETURN AN ARRAY OF BRANDS NAME
+
     private function getBrands(){
        return $this->getAdminCollectionTable()->fetchBrands();
     }
-//NOTICE: RETURN AB ARRAY OF CATEGORIES NAME
+
     private function getCategories(){
         return $this->getAdminCollectionTable()->fetchCategories();
     }
-//NOTE: RETURN AB ARRAY OF SUB-CATEGORIES NAME
+
     private function getSubCategories(){
         return $this->getAdminCollectionTable()->fetchSubCategories();
     }
-//NOTICE:
-    public function addAction(){
-//die(var_dump($this->getRequest()->getPost()));
-        $item_cat_id = $this->getRequest()->getPost()->item_category;
-        $img_folder_name = $this->getRequest()->getPost()->item_name;
-        $item_sub_cat_id = $this->getRequest()->getPost()->item_sub_category;
-        $item_cat_name = $this->getAdminCollectionTable()->fetchCategories();
-        $item_sub_cat_name = $this->getAdminCollectionTable()->fetchSubCategories();
-        $item_cat_name = $item_cat_name[$item_cat_id];
-        $item_sub_cat_name = $item_sub_cat_name[$item_sub_cat_id];
-//die(var_dump($this->getRequest()->getFiles()->toArray()));
-        $file = $this->getRequest()->getFiles();
-        $adapter = new Http();
-        $root_path = getcwd(); // app root path
-        if(! is_dir($root_path.'/public/img/CollectionImages/images/'.$item_cat_name.'/'.$item_sub_cat_name.'/'.$img_folder_name.'')){
-            mkdir($root_path.'/public/img/CollectionImages/images/'.$item_cat_name.'/'.$item_sub_cat_name.'/'.$img_folder_name.'');
-        }
-        $file_name = $file->img['name'];
-        $img_path = '/public/img/CollectionImages/images/'.$item_cat_name.'/'.$item_sub_cat_name.'/'.$img_folder_name.'';
-        $adapter->setDestination($root_path.$img_path);
-//die($adapter->getDestination());
-        $img_link = 'images/'.$item_cat_name.'/'.$item_sub_cat_name.'/'.$img_folder_name.'';
-        if (!$adapter->receive()) {
-            $messages = $adapter->getMessages();
-            echo implode("\n", $messages);
-        }
 
+    public function addAction(){
         $addFormView = $this->getServiceLocator()->get('AdminCollectionManagerForm');
+        //$form->get('submit')->setValue('Add');
         $request = $this->getRequest();
-//die(var_dump($request->getPost()));
         if ($request->isPost()) {
             $addFormView->setData($request->getPost());
         }
         if (! $addFormView->isValid()) {
-            $brands = $this->getBrands();
-            $categories = $this->getCategories();
-            $sub_cats = $this->getSubCategories();
-            $vm = new AdminViewModel(array(
+            $model = new ViewModel(array(
                 'error' => true,
-                'form' => $addFormView,
-                'brands' => $brands,
-                'categories' => $categories,
-                'sub_cats' => $sub_cats,
+                'addFormView' => $addFormView,
             ));
-            $vm->setTemplate('/admin/admin-collection-manager/add-form-view');
-            return $vm->setTerminal(true);
+            $model->setTemplate('/admin/admin-collection-manager/add-form-view');
+            return $model;
         }
-
         if ($addFormView->isValid()) {
             $item = new AdminCollection();
             $item->exchangeArray($addFormView->getData());
-            $item->img_link = $img_link;
-//die(var_dump($item));
             $this->getAdminCollectionTable()->saveItem($item);
-// Redirect to list of collection
-            return $this->redirect()->toRoute(null, array(
-                'controller' => 'collection-manager',
-                'action' => 'index'
-            ));
+
+            // Redirect to list of collection
+            return $this->redirect()->toRoute('/admin/collection-manager');
         }
-        //return array('formFromAddActionFromCollectionController' => $form);
+        //eturn array('formFromAddActionFromCollectionController' => $form);
     }
 
     public function editAction(){
@@ -154,9 +114,15 @@ class AdminCollectionManagerController extends AbstractActionController{
     }
 
     public function editViewAction(){
-        $item_id = $this->params()->fromRoute('id');
+//die('enter editAction');
+        $item_id = (int) $this->params()->fromRoute('id');
+        //
         $form  = $this->getServiceLocator()->get('AdminCollectionManagerForm');
+        //
         $item = $this->getAdminCollectionTable()->getItem($item_id);
+        //
+        $request = $this->getRequest();
+//die($request.'<br />'.__LINE__);
         if (!$item_id) {
             return $this->redirect()->toRoute('/admin/collection-manager', array(
                 'action' => 'index'
@@ -166,33 +132,39 @@ class AdminCollectionManagerController extends AbstractActionController{
         $item = (array)$item; //
         $form->setData($item);// just becouse form->bind($item) viyobivaetsya
         $form->get('submit')->setAttribute('value', 'Edit');
-        $brands = $this->getBrands();
-        $categories = $this->getCategories();
-        $vm =  new AdminViewModel(array(
-            'item_id' => $item_id, // for form action routing
+        //
+        return new AdminViewModel(array(
+            'item_id' => $item_id,
             'form' => $form,
-            'brands' => $brands,
-            'categories' => $categories
         ));
-        return $vm->setTerminal(true);
     }
 
     public function deleteAction(){
-        $id = $this->params()->fromRoute('id');
+        $id = (int) $this->params()->fromRoute('id');
         if (!$id) {
-            return $this->redirect()->toRoute('collection-manager', array(
-                'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('collection-manager');
         }
+
         $request = $this->getRequest();
-        if ($request->isGet()) {
-            $this->getAdminCollectionTable()->deleteItem($id);
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del == 'Yes') {
+                $id = $this->getRequest()->getPost('id');
+//die($id);
+                $this->getAdminCollectionTable()->deleteItem($id);
             }
-// Redirect to list of collection
+            // Redirect to list of collection
             return $this->redirect()->toRoute('collection-manager', array(
                 'action' => 'index'
             ));
         }
+
+        return array(
+            'id'    => $id,
+            'item' => $this->getAdminCollectionTable()->getItem($id)
+        );
+    }
 
     public function formDbAdapterAction(){
         $vm = new ViewModel();

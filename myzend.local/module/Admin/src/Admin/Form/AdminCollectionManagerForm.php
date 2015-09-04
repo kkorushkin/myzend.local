@@ -4,12 +4,11 @@ namespace Admin\Form;
 
 use Zend\Form\Form;
 
-
 class AdminCollectionManagerForm extends Form{
 
-    public function __construct($name = null){
-        parent::__construct('collection');
+    public function __construct(){
 
+        parent::__construct('collection');
         $this->setAttributes(array(
             'method'=>'post'
         ));
@@ -35,8 +34,8 @@ class AdminCollectionManagerForm extends Form{
             ),
         ));
         $this->add(array(
-            'name' => 'item_brand',
             'type'  => 'Zend\Form\Element\Select',
+            'name' => 'item_brand',
             'attributes' => array(
                 'required' => true,
                 'class' => 'form-control',
@@ -44,7 +43,6 @@ class AdminCollectionManagerForm extends Form{
             'options' => array(
                 'label' => 'Brand',
                 'value_options' => array(),
-                'disable_inarray_validator' => true,
                 'class' => 'form-control',
             )
         ));
@@ -92,8 +90,8 @@ class AdminCollectionManagerForm extends Form{
             ),
         ));
         $this->add(array(
-            'name' => 'item_category',
             'type'  => 'Zend\Form\Element\Select',
+            'name' => 'item_category',
             'attributes' => array(
                 'class' => 'form-control',
                 'required' => true,
@@ -101,12 +99,11 @@ class AdminCollectionManagerForm extends Form{
             'options' => array(
                 'label' => 'Category',
                 'value_options' => array(),
-                'disable_inarray_validator' => true,
             ),
         ));
         $this->add(array(
-            'name' => 'item_sub_category',
             'type'  => 'Zend\Form\Element\Select',
+            'name' => 'item_sub_category',
             'attributes' => array(
                 'class' => 'form-control',
                 'required' => true,
@@ -114,13 +111,12 @@ class AdminCollectionManagerForm extends Form{
             'options' => array(
                 'label' => 'Sub Category',
                 'value_options' => array(),
-                'disable_inarray_validator' => true,
             ),
         ));
         $this->add(array(
-            'name' => 'img',
-            'type'  => 'Zend\Form\Element\File',
+            'name' => 'img_link',
             'attributes' => array(
+                'type'  => 'file',
             ),
             'options' => array(
                 'label' => 'Image',
@@ -130,10 +126,10 @@ class AdminCollectionManagerForm extends Form{
             'name' => 'submit',
             'attributes' => array(
                 'type'  => 'submit',
-                'value' => 'insert',
+                'value' => 'добавить',
                 'class' => 'btn btn-primary',
             ),
         ));
-    }
 
+    }
 }

@@ -5,21 +5,25 @@ namespace Collection\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-use Collection\Model\Carts;
-use Collection\Model\CartsTables;
+use Collection\Model\Orders;
+use Collection\Model\OrdersTable;
+use Collection\Model\Cart;
+use Collection\Model\CartTable;
 
 use Zend\Session\Container;
 
 class CartController  extends AbstractActionController{
 
     public function indexAction(){
+//die('herE !');
         $sessid = new Container();
         $cart_id = $sessid->getDefaultManager()->getId();
-        $cart = $this->getServiceLocator()->get('CartsTable')->selectCart($cart_id);
+
+        $cart = $this->getCartTable()->selectCart($cart_id);
         $count = $cart->count();
         $is_empty = $this->isEmpty($cart);
         $disable_checkout = $this->disableCheckout($cart);
-
+//die($disable_checkout);
         $viewModel = new ViewModel(array(
             'is_empty' => $is_empty,
             'sessid' => $cart_id,
@@ -27,22 +31,10 @@ class CartController  extends AbstractActionController{
             'count' => $count,
             'disable_checkout' => $disable_checkout
         ));
-
-        $viewModel->setTerminal(true);
+//die(print_r($cart));
+        $viewModel
+            ->setTerminal(true);
         return $viewModel;
-
-    }
-//  @param: string $cart_id
-//  @return: recordSet $cart
-    protected function getUserIdBySessionId($cart_id){
-        if(! is_null($this->identity())){
-            $identity = $this->identity();
-            $user= $this->getUsersTable()->getUserByEmail($identity);
-            $user_id = $user->user_id;
-            return $cart = $this->getCartsTable()->selectCart($cart_id, $user_id);
-        }else{
-            return $cart = $this->getCartsTable()->selectCart($cart_id, $cart_id);
-        }
 
     }
 
@@ -64,7 +56,7 @@ class CartController  extends AbstractActionController{
 
     public function cartRemoveAction(){
         $item_id = $this->getRequest()->getPost('item_id');
-        return $this->getServiceLocator()->get('CartsTable')->deleteCartById($item_id);
+        return $this->getServiceLocator()->get('CartTable')->deleteCartById($item_id);
     }
 
     public function cartOrderAction(){
@@ -75,13 +67,9 @@ class CartController  extends AbstractActionController{
 
     }
 
-    public function getCartsTable(){
-        return $cartsTable = $this->getServiceLocator()->get('CartsTable');
-    }
-
-
-    public function getUsersTable(){
-        return $usersTable = $this->getServiceLocator()->get('UsersTable');
+    public function getCartTable(){
+        $cartTable = $this->getServiceLocator()->get('CartTable');
+        return $cartTable;
     }
 
 } 
